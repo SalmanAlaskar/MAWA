@@ -1,0 +1,445 @@
+// MAWA data model — see SPEC.md §5 (core entities) and §8 (KSA regulatory
+// specifics) for the rationale behind each field. PostGIS is recommended in
+// SPEC.md §7 for geo queries at scale; the scaffold stores plain lat/lng
+// floats and precomputed transit distances (§5) rather than reaching for
+// PostGIS this early.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Actors
+// ---------------------------------------------------------------------------
+
+enum AccountRole {
+  owner
+  smb_admin
+  platform_ops
+}
+
+enum AccountStatus {
+  pending
+  approved
+  rejected
+  more_info_needed
+  suspended
+}
+
+enum KycStatus {
+  unverified
+  pending
+  verified
+  failed
+}
+
+model Account {
+  id             String        @id @default(cuid())
+  role           AccountRole
+  email          String        @unique
+  phone          String?
+  fullName       String
+  status         AccountStatus @default(pending)
+  kycStatus      KycStatus     @default(unverified)
+  nafathVerified Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  company            Company?
+  properties         Property[]
+  complianceChecks   ComplianceCheck[]
+  reviewedChecks     ComplianceCheck[]  @relation("ComplianceReviewer")
+  guaranteeClaims    GuaranteeClaim[]
+
+  @@map("accounts")
+}
+
+model Company {
+  id               String    @id @default(cuid())
+  accountId        String    @unique
+  account          Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  legalName        String
+  crNumber         String    @unique // Commercial Registration number
+  wathqVerifiedAt  DateTime? // timestamp of last successful Wathq CR lookup
+  taxId            String? // ZATCA tax registration number
+  status           AccountStatus @default(pending)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  bookings Booking[]
+
+  @@map("companies")
+}
+
+// ---------------------------------------------------------------------------
+// Properties / units / listings
+// ---------------------------------------------------------------------------
+
+enum PropertyStatus {
+  draft
+  under_review
+  approved
+  rejected
+}
+
+model Property {
+  id                  String         @id @default(cuid())
+  ownerAccountId      String
+  owner               Account        @relation(fields: [ownerAccountId], references: [id], onDelete: Cascade)
+  address             String
+  district            String
+  city                String         @default("Riyadh")
+  nationalAddressCode String // Saudi Post short code, e.g. "RRRD3312"
+  geoLat              Float
+  geoLng              Float
+  titleDeedRef        String // proof-of-ownership document reference
+  baladyPermitRef     String? // municipal safety/occupancy permit, where applicable
+  status              PropertyStatus @default(draft)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  units             Unit[]
+  complianceChecks  ComplianceCheck[]
+
+  @@map("properties")
+}
+
+model Unit {
+  id             String   @id @default(cuid())
+  propertyId     String
+  property       Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  beds           Int
+  privateBaths   Int
+  parkingSpots   Int      @default(0)
+  parkingCovered Boolean  @default(false)
+  furnished      Boolean  @default(false)
+  sizeSqm        Float
+  maxOccupants   Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  listing Listing?
+
+  @@map("units")
+}
+
+enum ListingStatus {
+  draft
+  pending_fal_license
+  under_review
+  live
+  suspended
+}
+
+model Listing {
+  id               String        @id @default(cuid())
+  unitId           String        @unique
+  unit             Unit          @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  // Display title (e.g. "3BR Apartment, Al Yasmin") — not in SPEC.md §5's
+  // literal field list, but a listings marketplace UI needs a human title
+  // and the spec doesn't otherwise provide one. See README "deviations."
+  title            String
+  priceMonthly     Decimal       @db.Decimal(12, 2)
+  currency         String        @default("SAR")
+  falAdLicenseNo   String? // stamped by LicenseRegistryProvider once approved
+  availableFrom    DateTime
+  leaseTermMinMo   Int           @default(12)
+  status           ListingStatus @default(draft)
+  // Sandbox guardrail (SPEC.md §11.3): a sandbox listing must never be
+  // visually or legally indistinguishable from a real, publicly-bookable one.
+  sandbox          Boolean       @default(true)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  amenities         ListingAmenity[]
+  transitDistances  ListingTransitDistance[]
+  bookings          Booking[]
+
+  @@map("listings")
+}
+
+model Amenity {
+  id   String @id @default(cuid())
+  name String @unique
+
+  listings ListingAmenity[]
+
+  @@map("amenities")
+}
+
+model ListingAmenity {
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  amenityId String
+  amenity   Amenity @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@id([listingId, amenityId])
+  @@map("listing_amenities")
+}
+
+enum TransitType {
+  train
+  metro
+  bus
+}
+
+model TransitStop {
+  id     String      @id @default(cuid())
+  name   String
+  geoLat Float
+  geoLng Float
+  type   TransitType
+
+  listingDistances ListingTransitDistance[]
+
+  @@map("transit_stops")
+}
+
+// Precomputed (batch job), not derived live at search time — see SPEC.md §5.
+model ListingTransitDistance {
+  listingId     String
+  listing       Listing     @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  transitStopId String
+  transitStop   TransitStop @relation(fields: [transitStopId], references: [id], onDelete: Cascade)
+  distanceM     Int
+  walkTimeMin   Int
+  computedAt    DateTime    @default(now())
+
+  @@id([listingId, transitStopId])
+  @@map("listing_transit_distances")
+}
+
+// ---------------------------------------------------------------------------
+// Compliance / vetting (configurable rule sets, not hardcoded — SPEC.md §4)
+// ---------------------------------------------------------------------------
+
+enum ActorType {
+  owner
+  smb
+  property
+}
+
+model ComplianceRuleSet {
+  id            String    @id @default(cuid())
+  region        String    @default("KSA")
+  actorType     ActorType
+  requiredDocs  Json // list of { docType, label, expiryRequired }
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([region, actorType])
+  @@map("compliance_rule_sets")
+}
+
+enum ComplianceStatus {
+  pending
+  in_review
+  approved
+  rejected
+  expired
+  resubmission_required
+}
+
+model ComplianceCheck {
+  id                 String           @id @default(cuid())
+  accountId          String?
+  account            Account?         @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  propertyId         String?
+  property           Property?        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  docType            String
+  fileRef            String?
+  status             ComplianceStatus @default(pending)
+  reviewerId         String?
+  reviewer           Account?         @relation("ComplianceReviewer", fields: [reviewerId], references: [id])
+  reviewedAt         DateTime?
+  notes              String?
+  // External verification API response (Wathq/Nafath), stored as-is for audit.
+  verificationResult Json?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@map("compliance_checks")
+}
+
+// ---------------------------------------------------------------------------
+// Booking / contract / payment
+// ---------------------------------------------------------------------------
+
+enum BookingStatus {
+  requested
+  terms_reviewed
+  signed
+  ejar_registration
+  active
+  completed
+  cancelled
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  listingId     String
+  listing       Listing       @relation(fields: [listingId], references: [id])
+  smbCompanyId  String
+  smbCompany    Company       @relation(fields: [smbCompanyId], references: [id])
+  status        BookingStatus @default(requested)
+  leaseStart    DateTime
+  leaseEnd      DateTime
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  contract        Contract?
+  payments        Payment[]
+  guaranteeClaims GuaranteeClaim[]
+  reviews         Review[]
+
+  @@map("bookings")
+}
+
+enum EjarStatus {
+  not_submitted
+  submitted
+  registered
+  failed
+}
+
+model Contract {
+  id              String     @id @default(cuid())
+  bookingId       String     @unique
+  booking         Booking    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  templateVersion String     @default("v1")
+  signedOwnerAt   DateTime?
+  signedSmbAt     DateTime?
+  ejarContractId  String? // reference number once registered
+  ejarStatus      EjarStatus @default(not_submitted)
+  termsJson       Json
+  // Sandbox guardrail (SPEC.md §11.3) — an unregistered/mock contract is not
+  // legally enforceable and must never be mistaken for one that is.
+  sandbox         Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("contracts")
+}
+
+enum PayerType {
+  smb
+  platform
+}
+
+enum PaymentType {
+  rent
+  deposit
+  platform_fee
+  vat
+  insurance_premium
+}
+
+enum PaymentStatus {
+  pending
+  scheduled
+  paid
+  failed
+  refunded
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  bookingId       String
+  booking         Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  payer           PayerType
+  amount          Decimal       @db.Decimal(12, 2)
+  type            PaymentType
+  status          PaymentStatus @default(pending)
+  dueDate         DateTime
+  paidAt          DateTime?
+  zatcaInvoiceRef String? // Fatoora e-invoice reference on taxable fee lines
+  // Sandbox guardrail (SPEC.md §11.3) — never a real, legally-binding charge.
+  sandbox         Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("payments")
+}
+
+enum ClaimStatus {
+  filed
+  evidence_collection
+  under_review
+  approved
+  rejected
+  paid_out
+}
+
+enum FiledByRole {
+  owner
+  smb_admin
+  platform_ops
+}
+
+model GuaranteeClaim {
+  id            String      @id @default(cuid())
+  bookingId     String
+  booking       Booking     @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  filedById     String?
+  filedBy       Account?    @relation(fields: [filedById], references: [id])
+  filedByRole   FiledByRole
+  reason        String
+  evidenceRefs  Json        @default("[]")
+  status        ClaimStatus @default(filed)
+  payoutAmount  Decimal?    @db.Decimal(12, 2)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("guarantee_claims")
+}
+
+enum ReviewRole {
+  owner
+  smb_admin
+}
+
+model Review {
+  id        String     @id @default(cuid())
+  bookingId String
+  booking   Booking    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fromRole  ReviewRole
+  toRole    ReviewRole
+  rating    Int
+  comment   String?
+  createdAt DateTime   @default(now())
+
+  @@map("reviews")
+}
+
+// ---------------------------------------------------------------------------
+// Feature control panel (SPEC.md §12) — lets Ops flip provider (mock vs.
+// live) and product-level toggles from the Administration screen, without a
+// redeploy. Flipping a provider flag here is operator-facing display state
+// only: the actual provider construction still goes through
+// src/lib/providers/index.ts (PROVIDER_MODE env var) and the guard in
+// src/lib/providers/guard.ts, which refuses to construct a Live* provider
+// without real credentials regardless of what this table says (§11.3, §12).
+// ---------------------------------------------------------------------------
+
+enum FeatureFlagCategory {
+  provider
+  product
+}
+
+model FeatureFlag {
+  key         String              @id
+  label       String
+  description String
+  category    FeatureFlagCategory
+  enabled     Boolean             @default(false)
+  updatedBy   String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@map("feature_flags")
+}

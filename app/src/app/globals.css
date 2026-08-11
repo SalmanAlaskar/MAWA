@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #f7f3ea;
+  }
+
+  /* Price/stat figures use tabular numerals throughout, per design tokens. */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}

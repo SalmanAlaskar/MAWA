@@ -1,0 +1,191 @@
+{
+  "common": {
+    "brand": "مأوى",
+    "brandAr": "MAWA",
+    "sandboxBanner": "وضع تجريبي — ترخيص إعلان (فال)، وتسجيل عقد إيجار، والمدفوعات المعروضة هنا محاكاة فقط. لا شيء في هذه الصفحة إعلان أو عقد أو رسوم ملزمة قانونًا.",
+    "nav": {
+      "search": "البحث",
+      "shortlist": "القائمة المختصرة",
+      "bookings": "الحجوزات",
+      "company": "الشركة",
+      "properties": "العقارات",
+      "payouts": "المدفوعات",
+      "compliance": "الامتثال",
+      "disputes": "النزاعات",
+      "admin": "الإدارة"
+    },
+    "roleSwitcher": {
+      "label": "عرض كـ",
+      "owner": "مالك عقار",
+      "smb_admin": "مسؤول شركة",
+      "ops": "فريق العمليات"
+    },
+    "buttons": {
+      "reset": "إعادة تعيين",
+      "apply": "تطبيق",
+      "shortlist": "إضافة للقائمة",
+      "viewDetails": "عرض التفاصيل",
+      "requestBook": "طلب حجز",
+      "addProperty": "إضافة عقار",
+      "approve": "اعتماد",
+      "requestInfo": "طلب معلومات",
+      "reject": "رفض",
+      "edit": "تعديل",
+      "manage": "إدارة",
+      "backToResults": "العودة للنتائج"
+    },
+    "chips": {
+      "falVerified": "موثّق (فال)",
+      "falPending": "بانتظار ترخيص فال",
+      "live": "مباشر",
+      "pendingFalLicense": "بانتظار ترخيص فال",
+      "underReview": "قيد المراجعة",
+      "draft": "مسودة",
+      "paid": "مدفوع",
+      "upcoming": "قادم",
+      "scheduled": "مجدول",
+      "sandbox": "تجريبي"
+    },
+    "priceSuffix": "شهريًا + الرسوم",
+    "dash": "—"
+  },
+  "search": {
+    "h1": "سكن لموظفيك في الرياض",
+    "meta": "مُصفّى لـ 6 موظفين منتقلين · ميزانية معتمدة من المالية",
+    "filters": {
+      "price": "السعر الشهري",
+      "location": "الموقع",
+      "transit": "النقل العام",
+      "transitToggle": "على بعد 10 دقائق من المترو",
+      "beds": "غرف النوم",
+      "baths": "الحمامات الخاصة",
+      "parking": "مواقف السيارات",
+      "parkingAny": "أي عدد",
+      "parking1": "1+",
+      "parking2cov": "2+ مغطى",
+      "movein": "تاريخ الانتقال",
+      "furnished": "مفروش",
+      "furnishedToggle": "مفروش فقط"
+    },
+    "resultsCount": "عقار مطابق — مرتبة حسب ملاءمة الفلاتر",
+    "sort": "الترتيب: الأنسب",
+    "spec": {
+      "beds": "غرف",
+      "bath": "حمام خاص",
+      "baths": "حمامات خاصة",
+      "covered": "مغطى",
+      "uncovered": "غير مغطى"
+    },
+    "walkTo": "سيرًا"
+  },
+  "detail": {
+    "gallery": "صورة",
+    "amenitiesTitle": "المرافق",
+    "complianceTitle": "الثقة والامتثال",
+    "falLicense": "ترخيص الإعلان (فال)",
+    "ejarRegistration": "تسجيل عقد إيجار",
+    "ejarReadyOnBooking": "يتم عند الحجز",
+    "ownerIdentity": "هوية المالك",
+    "verifiedNafath": "موثّقة عبر نفاذ",
+    "guarantee": "ضمان مأوى",
+    "included": "مشمول",
+    "monthlyCost": "التكلفة الشهرية",
+    "rent": "الإيجار",
+    "platformFee": "رسوم المنصة ({pct}%)",
+    "vat": "ضريبة القيمة المضافة على الرسوم ({pct}%)",
+    "total": "الإجمالي / شهريًا",
+    "moveInLabel": "الانتقال",
+    "guaranteeNote": "مشمول بضمان مأوى — تغطية التخلف عن الإيجار والأضرار دون الحاجة لبوليصة منفصلة."
+  },
+  "booking": {
+    "titlePrefix": "حجز",
+    "steps": {
+      "requested": "تم الطلب",
+      "termsReviewed": "مراجعة الشروط",
+      "signed": "التوقيع الإلكتروني",
+      "ejar": "تسجيل إيجار",
+      "payment": "الدفع والانتقال"
+    },
+    "contractSummary": "ملخص العقد",
+    "landlord": "المالك",
+    "tenant": "الشركة المستأجرة",
+    "term": "مدة العقد",
+    "monthlyRent": "الإيجار الشهري",
+    "deposit": "مبلغ التأمين",
+    "ejarRef": "رقم إيجار",
+    "ownerSigned": "وقّع المالك",
+    "tenantSigned": "وقّعت الشركة",
+    "ejarRegistrationRow": "تسجيل إيجار",
+    "guaranteeTitle": "ضمان مأوى",
+    "guaranteePoints": {
+      "smb": "لشركتك: حماية من الأضرار والخروج المبكر",
+      "owner": "للمالك: إيجار مضمون، مدعوم من صندوق احتياطي مأوى",
+      "disputes": "تتم تسوية النزاعات عبر فريق عمليات مأوى وليس مباشرة بين الطرفين"
+    },
+    "paySchedule": "جدول الدفعات"
+  },
+  "owner": {
+    "title": "عقاراتك",
+    "stat": {
+      "activeListings": "الإعلانات النشطة",
+      "occupiedUnits": "الوحدات المؤجرة",
+      "monthlyPayout": "أرباح هذا الشهر",
+      "pendingReviews": "قيد المراجعة",
+      "afterFee": "بعد خصم رسوم المنصة {pct}%",
+      "awaitingFal": "بانتظار ترخيص فال"
+    },
+    "tableTitle": "عقاراتي",
+    "sortedByStatus": "مرتبة حسب الحالة",
+    "th": {
+      "property": "العقار",
+      "status": "الحالة",
+      "price": "السعر",
+      "tenant": "المستأجر",
+      "payout": "الدفعة القادمة"
+    }
+  },
+  "ops": {
+    "compliance": {
+      "title": "قائمة التحقق",
+      "metaCount": "طلبات بانتظار القرار",
+      "th": {
+        "applicant": "مقدّم الطلب",
+        "type": "النوع",
+        "submitted": "تاريخ التقديم",
+        "verification": "التحقق",
+        "docs": "المستندات"
+      },
+      "typeSmb": "شركة",
+      "typeOwner": "مالك",
+      "notePlaceholder": "ملاحظة داخلية (اختياري)"
+    },
+    "admin": {
+      "title": "إدارة المنصة",
+      "meta": "الإعدادات والضوابط المالية وحسابات المستخدمين — لفريق العمليات فقط",
+      "stat": {
+        "reserve": "احتياطي صندوق الضمان",
+        "payoutCap": "الحد الأقصى للدفعة: {amount} ريال/مطالبة",
+        "activeAccounts": "الحسابات النشطة",
+        "pendingApproval": "{count} بانتظار الاعتماد",
+        "openDisputes": "النزاعات المفتوحة",
+        "escalated": "{count} تم تصعيدها",
+        "takeRate": "نسبة عمولة المنصة",
+        "blended": "متوسط رسوم المالك والشركة"
+      },
+      "feeTitle": "إعدادات الرسوم",
+      "feeOwner": "عمولة المالك",
+      "feeSmb": "عمولة الشركة",
+      "feeVat": "ضريبة القيمة المضافة على رسوم المنصة",
+      "claimsTitle": "مطالبات الضمان",
+      "claimsTh": { "booking": "الحجز", "type": "النوع", "status": "الحالة", "amount": "المبلغ" },
+      "accountsTitle": "حسابات المستخدمين",
+      "accountsTh": { "account": "الحساب", "role": "الدور", "status": "الحالة", "joined": "تاريخ الانضمام", "action": "إجراء" },
+      "roleOwner": "مالك عقار",
+      "roleSmb": "مسؤول شركة",
+      "roleOps": "فريق العمليات",
+      "statusActive": "نشط",
+      "statusSuspended": "موقوف",
+      "statusPending": "قيد الانتظار"
+    }
+  }
+}

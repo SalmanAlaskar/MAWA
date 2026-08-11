@@ -1,0 +1,191 @@
+{
+  "common": {
+    "brand": "MAWA",
+    "brandAr": "مأوى",
+    "sandboxBanner": "Sandbox mode — Fal license, Ejar registration, and payments shown here are simulated. Nothing on this page is a real, legally-binding ad, contract, or charge.",
+    "nav": {
+      "search": "Search",
+      "shortlist": "Shortlist",
+      "bookings": "Bookings",
+      "company": "Company",
+      "properties": "Properties",
+      "payouts": "Payouts",
+      "compliance": "Compliance",
+      "disputes": "Disputes",
+      "admin": "Administration"
+    },
+    "roleSwitcher": {
+      "label": "Viewing as",
+      "owner": "Property Owner",
+      "smb_admin": "SMB Admin",
+      "ops": "Platform Ops"
+    },
+    "buttons": {
+      "reset": "Reset",
+      "apply": "Apply",
+      "shortlist": "Shortlist",
+      "viewDetails": "View details",
+      "requestBook": "Request to book",
+      "addProperty": "Add property",
+      "approve": "Approve",
+      "requestInfo": "Request info",
+      "reject": "Reject",
+      "edit": "Edit",
+      "manage": "Manage",
+      "backToResults": "Back to results"
+    },
+    "chips": {
+      "falVerified": "Fal-verified",
+      "falPending": "Fal pending",
+      "live": "Live",
+      "pendingFalLicense": "Pending Fal license",
+      "underReview": "Under review",
+      "draft": "Draft",
+      "paid": "Paid",
+      "upcoming": "Upcoming",
+      "scheduled": "Scheduled",
+      "sandbox": "Sandbox"
+    },
+    "priceSuffix": "/mo + fees",
+    "dash": "—"
+  },
+  "search": {
+    "h1": "Housing for your team in Riyadh",
+    "meta": "Filtered for 6 relocating employees · budget approved by finance",
+    "filters": {
+      "price": "Price per month",
+      "location": "Location",
+      "transit": "Transit",
+      "transitToggle": "Within 10 min of Metro",
+      "beds": "Bedrooms",
+      "baths": "Private bathrooms",
+      "parking": "Parking",
+      "parkingAny": "Any",
+      "parking1": "1+",
+      "parking2cov": "2+ covered",
+      "movein": "Move-in date",
+      "furnished": "Furnished",
+      "furnishedToggle": "Furnished only"
+    },
+    "resultsCount": "properties match — ranked by fit to your filters",
+    "sort": "Sort: Best match",
+    "spec": {
+      "beds": "beds",
+      "bath": "private bath",
+      "baths": "private baths",
+      "covered": "covered",
+      "uncovered": "uncovered"
+    },
+    "walkTo": "walk"
+  },
+  "detail": {
+    "gallery": "photos",
+    "amenitiesTitle": "Amenities",
+    "complianceTitle": "Trust & compliance",
+    "falLicense": "Fal advertising license",
+    "ejarRegistration": "Ejar contract registration",
+    "ejarReadyOnBooking": "Ready on booking",
+    "ownerIdentity": "Owner identity",
+    "verifiedNafath": "Verified via Nafath",
+    "guarantee": "MAWA Guarantee",
+    "included": "Included",
+    "monthlyCost": "Monthly cost",
+    "rent": "Rent",
+    "platformFee": "Platform fee ({pct}%)",
+    "vat": "VAT on fee ({pct}%)",
+    "total": "Total / month",
+    "moveInLabel": "Move-in",
+    "guaranteeNote": "Protected by the MAWA Guarantee — rent-default and damage cover included, no separate policy to arrange."
+  },
+  "booking": {
+    "titlePrefix": "Booking",
+    "steps": {
+      "requested": "Requested",
+      "termsReviewed": "Terms reviewed",
+      "signed": "E-signed",
+      "ejar": "Ejar registration",
+      "payment": "Payment & move-in"
+    },
+    "contractSummary": "Contract summary",
+    "landlord": "Landlord",
+    "tenant": "Tenant company",
+    "term": "Lease term",
+    "monthlyRent": "Monthly rent",
+    "deposit": "Security deposit",
+    "ejarRef": "Ejar reference",
+    "ownerSigned": "Owner signed",
+    "tenantSigned": "Tenant signed",
+    "ejarRegistrationRow": "Ejar registration",
+    "guaranteeTitle": "The MAWA Guarantee",
+    "guaranteePoints": {
+      "smb": "For your business: damage and early-exit protection",
+      "owner": "For the owner: guaranteed rent, backed by the MAWA reserve fund",
+      "disputes": "Disputes handled by MAWA ops, not directly between parties"
+    },
+    "paySchedule": "Payment schedule"
+  },
+  "owner": {
+    "title": "Your properties",
+    "stat": {
+      "activeListings": "Active listings",
+      "occupiedUnits": "Occupied units",
+      "monthlyPayout": "This month's payout",
+      "pendingReviews": "Pending reviews",
+      "afterFee": "After {pct}% platform fee",
+      "awaitingFal": "Awaiting Fal license"
+    },
+    "tableTitle": "My properties",
+    "sortedByStatus": "Sorted by status",
+    "th": {
+      "property": "Property",
+      "status": "Status",
+      "price": "Price",
+      "tenant": "Tenant",
+      "payout": "Next payout"
+    }
+  },
+  "ops": {
+    "compliance": {
+      "title": "Vetting queue",
+      "metaCount": "applications awaiting decision",
+      "th": {
+        "applicant": "Applicant",
+        "type": "Type",
+        "submitted": "Submitted",
+        "verification": "Verification",
+        "docs": "Docs"
+      },
+      "typeSmb": "SMB",
+      "typeOwner": "Owner",
+      "notePlaceholder": "Internal note (optional)"
+    },
+    "admin": {
+      "title": "Platform administration",
+      "meta": "Configuration, financial controls, and user accounts — Ops only",
+      "stat": {
+        "reserve": "Guarantee fund reserve",
+        "payoutCap": "Payout cap: SAR {amount}/claim",
+        "activeAccounts": "Active accounts",
+        "pendingApproval": "{count} pending approval",
+        "openDisputes": "Open disputes",
+        "escalated": "{count} escalated",
+        "takeRate": "Platform take rate",
+        "blended": "Blended owner + SMB fee"
+      },
+      "feeTitle": "Fee configuration",
+      "feeOwner": "Owner commission",
+      "feeSmb": "SMB commission",
+      "feeVat": "VAT on platform fee",
+      "claimsTitle": "Guarantee claims",
+      "claimsTh": { "booking": "Booking", "type": "Type", "status": "Status", "amount": "Amount" },
+      "accountsTitle": "User accounts",
+      "accountsTh": { "account": "Account", "role": "Role", "status": "Status", "joined": "Joined", "action": "Action" },
+      "roleOwner": "Property Owner",
+      "roleSmb": "SMB Admin",
+      "roleOps": "Platform Ops",
+      "statusActive": "Active",
+      "statusSuspended": "Suspended",
+      "statusPending": "Pending"
+    }
+  }
+}
