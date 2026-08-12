@@ -22,7 +22,7 @@ export default async function OwnerLayout({
   } as const;
 
   if (session.role !== 'owner') {
-    return <RoleGateNotice locale={locale} currentRole={session.role} requiredRole="owner" labels={roleLabels} />;
+    return <RoleGateNotice locale={locale} currentRole={session.role} requiredRole="owner" labels={roleLabels} tc={t} />;
   }
 
   const navItems = [

@@ -3,7 +3,8 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getListingById, nearestTransit } from '@/lib/data/listings';
 import { prisma } from '@/lib/prisma';
-import { formatSar } from '@/lib/format';
+import { formatDate, formatSar } from '@/lib/format';
+import { localizeAmenity, localizeCity, localizeDistrict, localizeListingTitle, localizeTransitStop } from '@/lib/i18n-data';
 import { PLATFORM_CONFIG } from '@/lib/config';
 import { getPaymentProvider } from '@/lib/providers';
 import { Card } from '@/components/ui/Card';
@@ -49,28 +50,37 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
             ))}
           </div>
 
-          <h1 className="mb-1 mt-4 font-heading text-xl font-bold sm:text-2xl">{listing.title}</h1>
+          <h1 className="mb-1 mt-4 font-heading text-xl font-bold sm:text-2xl">{localizeListingTitle(listing.title, locale)}</h1>
           <div className="flex items-center gap-1.5 text-[13.5px] text-ink-soft">
             <Icon name="pin" className="h-3.5 w-3.5" />
-            {property.district}, {property.city} · National Address {property.nationalAddressCode}
+            {localizeDistrict(property.district, locale)}, {localizeCity(property.city, locale)} ·{' '}
+            {t('nationalAddress', { code: property.nationalAddressCode })}
           </div>
 
           <Card className="my-4 grid grid-cols-2 gap-3.5 p-4 sm:grid-cols-4">
-            <SpecCell icon="bed" b={`${listing.unit.beds} beds`} s="Built-in wardrobes" />
-            <SpecCell icon="bath" b={`${listing.unit.privateBaths} private baths`} s="En-suite master" />
+            <SpecCell icon="bed" b={t('specBeds', { count: listing.unit.beds })} s={t('captionWardrobes')} />
+            <SpecCell icon="bath" b={t('specBaths', { count: listing.unit.privateBaths })} s={t('captionEnsuite')} />
             <SpecCell
               icon="parking"
-              b={`${listing.unit.parkingSpots} ${listing.unit.parkingCovered ? 'covered' : 'uncovered'}`}
-              s="Basement parking"
+              b={
+                listing.unit.parkingCovered
+                  ? t('specParkingCovered', { count: listing.unit.parkingSpots })
+                  : t('specParkingUncovered', { count: listing.unit.parkingSpots })
+              }
+              s={t('captionParking')}
             />
-            <SpecCell icon="train" b={transit ? `${transit.walkTimeMin} min walk` : 'No nearby stop'} s={transit?.transitStop.name ?? ''} />
+            <SpecCell
+              icon="train"
+              b={transit ? t('specWalkTime', { count: transit.walkTimeMin }) : t('specNoNearbyStop')}
+              s={transit ? localizeTransitStop(transit.transitStop.name, locale) : ''}
+            />
           </Card>
 
           <p className="mb-2.5 mt-5 text-[11.5px] font-semibold uppercase tracking-wide text-ink-soft">{t('amenitiesTitle')}</p>
           <div className="flex flex-wrap gap-2">
             {listing.amenities.map((a) => (
               <Chip key={a.amenityId} variant="neutral">
-                {a.amenity.name}
+                {localizeAmenity(a.amenity.name, locale)}
               </Chip>
             ))}
           </div>
@@ -102,7 +112,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
           <input
             className="w-full rounded-lg border border-line bg-white px-2.5 py-2 text-[13px] text-ink"
             readOnly
-            value={`${t('moveInLabel')}: 1 Oct 2026`}
+            value={`${t('moveInLabel')}: ${formatDate(new Date('2026-10-01'), locale)}`}
           />
           {existingBooking ? (
             <LinkButton href={`/bookings/${existingBooking.id}`} className="justify-center">

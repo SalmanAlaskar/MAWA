@@ -48,15 +48,17 @@ export async function getApplicantChecks(key: string) {
  * The compliance queue table shows one summarized verification chip per
  * applicant (SPEC.md §4's Wathq/Nafath checks), derived from whichever
  * check represents the primary external lookup for that actor type.
+ * Returns a translation key + variant rather than a literal label so the
+ * caller can localize it via next-intl.
  */
-export function primaryVerificationLabel(
+export function primaryVerificationStatus(
   group: ComplianceQueueRow['allChecks']
-): { label: string; variant: 'success' | 'warning' | 'critical' } {
+): { key: 'pending' | 'wathqVerified' | 'nafathVerified' | 'crMismatch' | 'idMismatch' | 'wathqPending' | 'nafathPending'; variant: 'success' | 'warning' | 'critical' } {
   const primary = group.find((c) => c.docType === 'commercial_registration') ?? group.find((c) => c.docType === 'national_id');
-  if (!primary) return { label: 'Pending', variant: 'warning' };
+  if (!primary) return { key: 'pending', variant: 'warning' };
 
   const isCr = primary.docType === 'commercial_registration';
-  if (primary.status === 'approved') return { label: isCr ? 'Wathq verified' : 'Nafath verified', variant: 'success' };
-  if (primary.status === 'rejected') return { label: isCr ? 'CR mismatch' : 'ID mismatch', variant: 'critical' };
-  return { label: isCr ? 'Wathq pending' : 'Nafath pending', variant: 'warning' };
+  if (primary.status === 'approved') return { key: isCr ? 'wathqVerified' : 'nafathVerified', variant: 'success' };
+  if (primary.status === 'rejected') return { key: isCr ? 'crMismatch' : 'idMismatch', variant: 'critical' };
+  return { key: isCr ? 'wathqPending' : 'nafathPending', variant: 'warning' };
 }

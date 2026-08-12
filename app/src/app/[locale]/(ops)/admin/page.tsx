@@ -3,6 +3,7 @@ import { getAdminOverview } from '@/lib/data/admin';
 import { formatSar, formatDate } from '@/lib/format';
 import { PLATFORM_CONFIG } from '@/lib/config';
 import { toggleFeatureFlag } from '@/lib/admin-actions';
+import { claimReasonLabel } from '@/lib/i18n-data';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { Switch } from '@/components/ui/Switch';
@@ -64,9 +65,9 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
             {claims.map((claim) => (
               <Tr key={claim.id}>
                 <Td className="tabular-nums">#{claim.bookingId.slice(-5).toUpperCase()}</Td>
-                <Td>{claim.reason}</Td>
+                <Td>{claimReasonLabel(claim.reason, locale)}</Td>
                 <Td>
-                  <ClaimStatusChip status={claim.status} />
+                  <ClaimStatusChip status={claim.status} t={t} />
                 </Td>
                 <Td className="tabular-nums">{claim.payoutAmount ? formatSar(Number(claim.payoutAmount), locale) : tc('dash')}</Td>
               </Tr>
@@ -134,10 +135,10 @@ function FeeRow({ label, value, tc }: { label: string; value: string; tc: Awaite
   );
 }
 
-function ClaimStatusChip({ status }: { status: string }) {
-  if (status === 'approved' || status === 'paid_out') return <Chip variant="success">Approved</Chip>;
-  if (status === 'rejected') return <Chip variant="critical">Rejected</Chip>;
-  return <Chip variant="warning">Under review</Chip>;
+function ClaimStatusChip({ status, t }: { status: string; t: Awaited<ReturnType<typeof getTranslations>> }) {
+  if (status === 'approved' || status === 'paid_out') return <Chip variant="success">{t('claimStatusApproved')}</Chip>;
+  if (status === 'rejected') return <Chip variant="critical">{t('claimStatusRejected')}</Chip>;
+  return <Chip variant="warning">{t('claimStatusReview')}</Chip>;
 }
 
 function AccountStatusChip({ status, t }: { status: string; t: Awaited<ReturnType<typeof getTranslations>> }) {

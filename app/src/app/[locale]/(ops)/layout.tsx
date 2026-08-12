@@ -22,7 +22,7 @@ export default async function OpsLayout({
   } as const;
 
   if (session.role !== 'ops') {
-    return <RoleGateNotice locale={locale} currentRole={session.role} requiredRole="ops" labels={roleLabels} />;
+    return <RoleGateNotice locale={locale} currentRole={session.role} requiredRole="ops" labels={roleLabels} tc={t} />;
   }
 
   const navItems = [

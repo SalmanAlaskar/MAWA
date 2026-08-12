@@ -1,9 +1,12 @@
+import { getTranslations } from 'next-intl/server';
 import { NotBuiltYet } from '@/components/layout/NotBuiltYet';
 
-export default function OwnerCompliancePage() {
+export default async function OwnerCompliancePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'common' });
   return (
     <div className="px-4 py-10 sm:px-6">
-      <NotBuiltYet title="Compliance" />
+      <NotBuiltYet title={t('nav.compliance')} body={t('notBuiltYetBody')} />
     </div>
   );
 }

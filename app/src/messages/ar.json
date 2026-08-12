@@ -45,7 +45,12 @@
       "sandbox": "تجريبي"
     },
     "priceSuffix": "شهريًا + الرسوم",
-    "dash": "—"
+    "dash": "—",
+    "roleGateTitle": "هذا القسم مخصص لحسابات {role}",
+    "roleGateDescription": "أنت الآن تتصفح بصفتك {role}. هذه جلسة تجريبية تعتمد على ملف تعريف الارتباط (بدون تسجيل دخول حقيقي حتى الآن) — بدّل الدور أدناه للمتابعة.",
+    "notBuiltYetBody": "لم يُبنَ هذا القسم في هذا النموذج الأولي — يتطلب المشروع تصميمًا حقيقيًا للشاشات الست المعتمدة؛ هذا القسم عنصر نائب مؤقت لتفادي ظهور صفحة غير موجودة عند التنقل.",
+    "noBookingsYet": "لا توجد حجوزات بعد",
+    "districtLabel": "حي {district}"
   },
   "search": {
     "h1": "سكن لموظفيك في الرياض",
@@ -74,7 +79,8 @@
       "covered": "مغطى",
       "uncovered": "غير مغطى"
     },
-    "walkTo": "سيرًا"
+    "walkTimeLabel": "{count} دقيقة سيرًا",
+    "noListingsYet": "لا توجد إعلانات بعد — نفّذ الأمر `npm run db:seed` على قاعدة بيانات Postgres محلية لتعبئة بيانات تجريبية."
   },
   "detail": {
     "gallery": "صورة",
@@ -93,7 +99,17 @@
     "vat": "ضريبة القيمة المضافة على الرسوم ({pct}%)",
     "total": "الإجمالي / شهريًا",
     "moveInLabel": "الانتقال",
-    "guaranteeNote": "مشمول بضمان مأوى — تغطية التخلف عن الإيجار والأضرار دون الحاجة لبوليصة منفصلة."
+    "guaranteeNote": "مشمول بضمان مأوى — تغطية التخلف عن الإيجار والأضرار دون الحاجة لبوليصة منفصلة.",
+    "nationalAddress": "العنوان الوطني {code}",
+    "specBeds": "{count} غرف",
+    "specBaths": "{count} حمامات خاصة",
+    "specParkingCovered": "{count} مغطى",
+    "specParkingUncovered": "{count} غير مغطى",
+    "specWalkTime": "{count} دقيقة سيرًا",
+    "specNoNearbyStop": "لا توجد محطة قريبة",
+    "captionWardrobes": "خزائن مدمجة",
+    "captionEnsuite": "غرفة نوم رئيسية بحمام خاص",
+    "captionParking": "موقف تحت المبنى"
   },
   "booking": {
     "titlePrefix": "حجز",
@@ -120,7 +136,13 @@
       "owner": "للمالك: إيجار مضمون، مدعوم من صندوق احتياطي مأوى",
       "disputes": "تتم تسوية النزاعات عبر فريق عمليات مأوى وليس مباشرة بين الطرفين"
     },
-    "paySchedule": "جدول الدفعات"
+    "paySchedule": "جدول الدفعات",
+    "ejarInProgress": "قيد التنفيذ",
+    "paymentPending": "قيد الانتظار",
+    "ejarSubmittedAwaiting": "تم الإرسال، بانتظار الرقم",
+    "ejarEstDays": "يستغرق من 1 إلى 2 يوم عمل تقريبًا",
+    "depositLabel": "التأمين",
+    "monthRentFees": "إيجار {month} + الرسوم"
   },
   "owner": {
     "title": "عقاراتك",
@@ -130,6 +152,7 @@
       "monthlyPayout": "أرباح هذا الشهر",
       "pendingReviews": "قيد المراجعة",
       "afterFee": "بعد خصم رسوم المنصة {pct}%",
+      "occupancyPct": "{pct}% نسبة الإشغال",
       "awaitingFal": "بانتظار ترخيص فال"
     },
     "tableTitle": "عقاراتي",
@@ -140,7 +163,9 @@
       "price": "السعر",
       "tenant": "المستأجر",
       "payout": "الدفعة القادمة"
-    }
+    },
+    "statLine": "{count} عقار · {districtCount} أحياء في {city}",
+    "statDeltaActiveListings": "+1 هذا الشهر"
   },
   "ops": {
     "compliance": {
@@ -155,7 +180,33 @@
       },
       "typeSmb": "شركة",
       "typeOwner": "مالك",
-      "notePlaceholder": "ملاحظة داخلية (اختياري)"
+      "notePlaceholder": "ملاحظة داخلية (اختياري)",
+      "crPrefix": "س.ت",
+      "verification": {
+        "pending": "قيد الانتظار",
+        "wathqVerified": "موثّق (واثق)",
+        "nafathVerified": "موثّق (نفاذ)",
+        "crMismatch": "عدم تطابق السجل التجاري",
+        "idMismatch": "عدم تطابق الهوية",
+        "wathqPending": "بانتظار واثق",
+        "nafathPending": "بانتظار نفاذ"
+      },
+      "docStatus": {
+        "verified": "موثّق",
+        "mismatch": "عدم تطابق",
+        "pending": "قيد الانتظار"
+      },
+      "docTypes": {
+        "authorization_letter": "خطاب تفويض",
+        "balady_permit": "رخصة بلدي",
+        "commercial_registration": "السجل التجاري",
+        "listing_photos": "صور الإعلان",
+        "national_id": "الهوية الوطنية",
+        "safety_cert": "شهادة السلامة",
+        "signatory_id": "هوية المخوّل بالتوقيع",
+        "tax_id": "الرقم الضريبي",
+        "title_deed": "صك الملكية"
+      }
     },
     "admin": {
       "title": "إدارة المنصة",
@@ -195,6 +246,9 @@
       "statusActive": "نشط",
       "statusSuspended": "موقوف",
       "statusPending": "قيد الانتظار",
+      "claimStatusApproved": "معتمدة",
+      "claimStatusRejected": "مرفوضة",
+      "claimStatusReview": "قيد المراجعة",
       "flags": {
         "title": "لوحة التحكم بالميزات",
         "subtitle": "تفعيل وتعطيل مزودي الخدمة وميزات المنتج دون الحاجة لإعادة نشر النظام",

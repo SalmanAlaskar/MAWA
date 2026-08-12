@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { searchListings, nearestTransit } from '@/lib/data/listings';
-import { formatSar } from '@/lib/format';
+import { formatDate, formatSar } from '@/lib/format';
+import { localizeCity, localizeDistrict, localizeListingTitle, localizeTransitStop } from '@/lib/i18n-data';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { Icon } from '@/components/ui/Icon';
@@ -40,7 +41,7 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
           <div>
             <p className="mb-2 text-[11.5px] font-semibold uppercase tracking-wide text-ink-soft">{t('filters.location')}</p>
             <div className="flex flex-wrap gap-1.5">
-              {['Riyadh', 'Al Yasmin'].map((tag) => (
+              {[localizeCity('Riyadh', locale), localizeDistrict('Al Yasmin', locale)].map((tag) => (
                 <span key={tag} className="flex items-center gap-1.5 rounded-full border border-line bg-surface-2 px-2.5 py-1 text-[12.5px]">
                   {tag} <Icon name="x" className="h-2.5 w-2.5" />
                 </span>
@@ -83,7 +84,11 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
 
           <div>
             <p className="mb-2 text-[11.5px] font-semibold uppercase tracking-wide text-ink-soft">{t('filters.movein')}</p>
-            <input className="w-full rounded-lg border border-line bg-white px-2.5 py-2 text-[13px] text-ink" readOnly value="1 Oct 2026" />
+            <input
+              className="w-full rounded-lg border border-line bg-white px-2.5 py-2 text-[13px] text-ink"
+              readOnly
+              value={formatDate(new Date('2026-10-01'), locale)}
+            />
           </div>
 
           <div className="flex items-center justify-between text-[13px]">
@@ -113,9 +118,7 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
 
           <div className="flex flex-col gap-3">
             {listings.length === 0 ? (
-              <Card className="p-6 text-center text-[13px] text-ink-soft">
-                No listings yet — run <code>npm run db:seed</code> against a local Postgres to populate demo data.
-              </Card>
+              <Card className="p-6 text-center text-[13px] text-ink-soft">{t('noListingsYet')}</Card>
             ) : null}
             {listings.map((listing) => {
               const transit = nearestTransit(listing);
@@ -127,10 +130,10 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
                   <div className="flex flex-1 flex-col gap-2">
                     <div className="flex items-start justify-between gap-2.5">
                       <div>
-                        <p className="font-heading text-[15.5px] font-bold">{listing.title}</p>
+                        <p className="font-heading text-[15.5px] font-bold">{localizeListingTitle(listing.title, locale)}</p>
                         <div className="mt-0.5 flex items-center gap-1.5 text-[12.5px] text-ink-soft">
                           <Icon name="pin" className="h-3.5 w-3.5" />
-                          {listing.unit.property.district}, {listing.unit.property.city}
+                          {localizeDistrict(listing.unit.property.district, locale)}, {localizeCity(listing.unit.property.city, locale)}
                         </div>
                       </div>
                       {listing.falAdLicenseNo ? (
@@ -160,7 +163,7 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
                     {transit ? (
                       <div className="flex w-fit items-center gap-1.5 rounded-lg bg-accent-tint px-2.5 py-1 text-[12.5px] text-accent-strong">
                         <Icon name="train" className="h-3.5 w-3.5" />
-                        {transit.walkTimeMin} min {t('walkTo')} · {transit.transitStop.name}
+                        {t('walkTimeLabel', { count: transit.walkTimeMin })} · {localizeTransitStop(transit.transitStop.name, locale)}
                       </div>
                     ) : null}
                     <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-1.5">

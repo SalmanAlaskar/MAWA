@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { redirect } from '@/i18n/navigation';
 import { prisma } from '@/lib/prisma';
 import { NotBuiltYet } from '@/components/layout/NotBuiltYet';
@@ -15,9 +16,10 @@ export default async function BookingsIndexPage({ params }: { params: Promise<{ 
   if (latest) {
     redirect({ href: `/bookings/${latest.id}`, locale });
   }
+  const t = await getTranslations({ locale, namespace: 'common' });
   return (
     <div className="px-4 py-10 sm:px-6">
-      <NotBuiltYet title="No bookings yet" />
+      <NotBuiltYet title={t('noBookingsYet')} body={t('notBuiltYetBody')} />
     </div>
   );
 }

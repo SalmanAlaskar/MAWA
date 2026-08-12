@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getBookingById, bookingRef, bookingStepStatus, paymentScheduleGroups } from '@/lib/data/bookings';
 import { formatSar, formatDate, formatDateTime } from '@/lib/format';
+import { localizeAddress, localizeListingTitle } from '@/lib/i18n-data';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { Icon } from '@/components/ui/Icon';
@@ -27,16 +28,21 @@ export default async function BookingPage({ params }: { params: Promise<{ locale
     {
       key: 'ejar',
       label: t('steps.ejar'),
-      sub: contract?.ejarStatus === 'registered' ? undefined : 'In progress',
+      sub: contract?.ejarStatus === 'registered' ? undefined : t('ejarInProgress'),
       state: stepState.ejar,
     },
-    { key: 'payment', label: t('steps.payment'), sub: stepState.payment === 'upcoming' ? 'Pending' : undefined, state: stepState.payment },
+    {
+      key: 'payment',
+      label: t('steps.payment'),
+      sub: stepState.payment === 'upcoming' ? t('paymentPending') : undefined,
+      state: stepState.payment,
+    },
   ];
 
   return (
     <div className="px-4 py-6 sm:px-6 sm:py-8">
       <h1 className="font-heading text-xl font-bold sm:text-2xl">
-        {t('titlePrefix')} #{bookingRef(booking.id)} — {booking.listing.title}
+        {t('titlePrefix')} #{bookingRef(booking.id)} — {localizeListingTitle(booking.listing.title, locale)}
       </h1>
       <p className="mt-1 text-[12.5px] text-ink-soft">
         {tc('nav.bookings')}: {formatDate(booking.createdAt, locale)} · {booking.smbCompany.legalName}
@@ -48,12 +54,12 @@ export default async function BookingPage({ params }: { params: Promise<{ locale
         <Card className="flex flex-col gap-4 p-4">
           <h3 className="font-heading text-[15.5px] font-bold">{t('contractSummary')}</h3>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
-            <Kv label={t('landlord')} value={property.address} />
+            <Kv label={t('landlord')} value={localizeAddress(property.address, locale)} />
             <Kv label={t('tenant')} value={booking.smbCompany.legalName} />
             <Kv label={t('term')} value={`${formatDate(booking.leaseStart, locale)} – ${formatDate(booking.leaseEnd, locale)}`} />
             <Kv label={t('monthlyRent')} value={formatSar(Number(booking.listing.priceMonthly), locale)} />
             <Kv label={t('deposit')} value={formatSar(Number(booking.listing.priceMonthly), locale)} />
-            <Kv label={t('ejarRef')} value={contract?.ejarContractId ?? 'Submitted, awaiting no.'} />
+            <Kv label={t('ejarRef')} value={contract?.ejarContractId ?? t('ejarSubmittedAwaiting')} />
           </div>
 
           <div>
@@ -73,7 +79,7 @@ export default async function BookingPage({ params }: { params: Promise<{ locale
               icon="clock"
               tone={contract?.ejarStatus === 'registered' ? 'success' : 'warning'}
               label={t('ejarRegistrationRow')}
-              time={contract?.ejarStatus === 'registered' ? formatDate(contract.updatedAt, locale) : 'Est. 1–2 business days'}
+              time={contract?.ejarStatus === 'registered' ? formatDate(contract.updatedAt, locale) : t('ejarEstDays')}
             />
           </div>
         </Card>
@@ -92,16 +98,22 @@ export default async function BookingPage({ params }: { params: Promise<{ locale
 
           <Card className="p-4">
             <p className="mb-1.5 text-[11.5px] font-semibold uppercase tracking-wide text-ink-soft">{t('paySchedule')}</p>
-            {paymentScheduleGroups(booking.payments).map((group) => (
-              <div
-                key={group.dueDate.toISOString()}
-                className="flex items-center justify-between gap-2 border-t border-line py-2.5 text-[12.5px] first:border-t-0"
-              >
-                <span>{group.label}</span>
-                <PaymentChip status={group.status} tc={tc} />
-                <span className="font-semibold tabular-nums">{formatSar(group.totalAmount, locale)}</span>
-              </div>
-            ))}
+            {paymentScheduleGroups(booking.payments).map((group) => {
+              const month = new Intl.DateTimeFormat(locale === 'ar' ? 'ar-SA-u-nu-latn' : 'en-US', { month: 'short' }).format(
+                group.dueDate
+              );
+              const label = group.isDepositOnly ? t('depositLabel') : t('monthRentFees', { month });
+              return (
+                <div
+                  key={group.dueDate.toISOString()}
+                  className="flex items-center justify-between gap-2 border-t border-line py-2.5 text-[12.5px] first:border-t-0"
+                >
+                  <span>{label}</span>
+                  <PaymentChip status={group.status} tc={tc} />
+                  <span className="font-semibold tabular-nums">{formatSar(group.totalAmount, locale)}</span>
+                </div>
+              );
+            })}
           </Card>
         </div>
       </div>

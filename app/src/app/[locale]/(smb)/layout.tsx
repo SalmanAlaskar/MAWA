@@ -22,7 +22,7 @@ export default async function SmbLayout({
   } as const;
 
   if (session.role !== 'smb_admin') {
-    return <RoleGateNotice locale={locale} currentRole={session.role} requiredRole="smb_admin" labels={roleLabels} />;
+    return <RoleGateNotice locale={locale} currentRole={session.role} requiredRole="smb_admin" labels={roleLabels} tc={t} />;
   }
 
   const navItems = [

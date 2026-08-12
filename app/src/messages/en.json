@@ -45,7 +45,12 @@
       "sandbox": "Sandbox"
     },
     "priceSuffix": "/mo + fees",
-    "dash": "—"
+    "dash": "—",
+    "roleGateTitle": "This area is for {role} accounts",
+    "roleGateDescription": "You're currently viewing as {role}. This is a stub, cookie-based session (no real auth yet) — switch roles below to continue.",
+    "notBuiltYetBody": "Not built out in this scaffold — the brief calls for real layout/components on the six approved mockup screens; this section is a placeholder so navigation doesn't 404.",
+    "noBookingsYet": "No bookings yet",
+    "districtLabel": "{district} District"
   },
   "search": {
     "h1": "Housing for your team in Riyadh",
@@ -74,7 +79,8 @@
       "covered": "covered",
       "uncovered": "uncovered"
     },
-    "walkTo": "walk"
+    "walkTimeLabel": "{count} min walk",
+    "noListingsYet": "No listings yet — run `npm run db:seed` against a local Postgres to populate demo data."
   },
   "detail": {
     "gallery": "photos",
@@ -93,7 +99,17 @@
     "vat": "VAT on fee ({pct}%)",
     "total": "Total / month",
     "moveInLabel": "Move-in",
-    "guaranteeNote": "Protected by the MAWA Guarantee — rent-default and damage cover included, no separate policy to arrange."
+    "guaranteeNote": "Protected by the MAWA Guarantee — rent-default and damage cover included, no separate policy to arrange.",
+    "nationalAddress": "National Address {code}",
+    "specBeds": "{count} beds",
+    "specBaths": "{count} private baths",
+    "specParkingCovered": "{count} covered",
+    "specParkingUncovered": "{count} uncovered",
+    "specWalkTime": "{count} min walk",
+    "specNoNearbyStop": "No nearby stop",
+    "captionWardrobes": "Built-in wardrobes",
+    "captionEnsuite": "En-suite master",
+    "captionParking": "Basement parking"
   },
   "booking": {
     "titlePrefix": "Booking",
@@ -120,7 +136,13 @@
       "owner": "For the owner: guaranteed rent, backed by the MAWA reserve fund",
       "disputes": "Disputes handled by MAWA ops, not directly between parties"
     },
-    "paySchedule": "Payment schedule"
+    "paySchedule": "Payment schedule",
+    "ejarInProgress": "In progress",
+    "paymentPending": "Pending",
+    "ejarSubmittedAwaiting": "Submitted, awaiting no.",
+    "ejarEstDays": "Est. 1–2 business days",
+    "depositLabel": "Deposit",
+    "monthRentFees": "{month} rent + fees"
   },
   "owner": {
     "title": "Your properties",
@@ -130,6 +152,7 @@
       "monthlyPayout": "This month's payout",
       "pendingReviews": "Pending reviews",
       "afterFee": "After {pct}% platform fee",
+      "occupancyPct": "{pct}% occupancy",
       "awaitingFal": "Awaiting Fal license"
     },
     "tableTitle": "My properties",
@@ -140,7 +163,9 @@
       "price": "Price",
       "tenant": "Tenant",
       "payout": "Next payout"
-    }
+    },
+    "statLine": "{count} properties · {districtCount} districts in {city}",
+    "statDeltaActiveListings": "+1 this month"
   },
   "ops": {
     "compliance": {
@@ -155,7 +180,33 @@
       },
       "typeSmb": "SMB",
       "typeOwner": "Owner",
-      "notePlaceholder": "Internal note (optional)"
+      "notePlaceholder": "Internal note (optional)",
+      "crPrefix": "CR",
+      "verification": {
+        "pending": "Pending",
+        "wathqVerified": "Wathq verified",
+        "nafathVerified": "Nafath verified",
+        "crMismatch": "CR mismatch",
+        "idMismatch": "ID mismatch",
+        "wathqPending": "Wathq pending",
+        "nafathPending": "Nafath pending"
+      },
+      "docStatus": {
+        "verified": "Verified",
+        "mismatch": "Mismatch",
+        "pending": "Pending"
+      },
+      "docTypes": {
+        "authorization_letter": "Authorization Letter",
+        "balady_permit": "Balady Permit",
+        "commercial_registration": "Commercial Registration",
+        "listing_photos": "Listing Photos",
+        "national_id": "National ID",
+        "safety_cert": "Safety Certificate",
+        "signatory_id": "Signatory ID",
+        "tax_id": "Tax ID",
+        "title_deed": "Title Deed"
+      }
     },
     "admin": {
       "title": "Platform administration",
@@ -195,6 +246,9 @@
       "statusActive": "Active",
       "statusSuspended": "Suspended",
       "statusPending": "Pending",
+      "claimStatusApproved": "Approved",
+      "claimStatusRejected": "Rejected",
+      "claimStatusReview": "Under review",
       "flags": {
         "title": "Feature control panel",
         "subtitle": "Toggle providers and product features without a redeploy",

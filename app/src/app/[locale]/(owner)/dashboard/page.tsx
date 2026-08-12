@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { getSession } from '@/lib/session';
 import { getOwnerDashboard } from '@/lib/data/owner';
 import { formatSar, formatDate } from '@/lib/format';
+import { localizeAddress, localizeCity, localizeDistrict, localizeListingTitle } from '@/lib/i18n-data';
 import { PLATFORM_CONFIG } from '@/lib/config';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
@@ -27,7 +28,11 @@ export default async function OwnerDashboardPage({ params }: { params: Promise<{
         <div>
           <h1 className="font-heading text-xl font-bold sm:text-2xl">{t('title')}</h1>
           <p className="mt-1 text-[12.5px] text-ink-soft">
-            {properties.length} properties · {districts.size} districts in {properties[0]?.city ?? 'Riyadh'}
+            {t('statLine', {
+              count: properties.length,
+              districtCount: districts.size,
+              city: localizeCity(properties[0]?.city ?? 'Riyadh', locale),
+            })}
           </p>
         </div>
         <Button variant="primary">
@@ -36,11 +41,11 @@ export default async function OwnerDashboardPage({ params }: { params: Promise<{
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3 sm:gap-3.5 lg:grid-cols-4">
-        <StatTile label={t('stat.activeListings')} value={String(stats.activeListingsCount)} delta="+1 this month" />
+        <StatTile label={t('stat.activeListings')} value={String(stats.activeListingsCount)} delta={t('statDeltaActiveListings')} />
         <StatTile
           label={t('stat.occupiedUnits')}
           value={`${stats.occupiedUnitsCount}/${stats.totalUnits}`}
-          delta={`${stats.totalUnits > 0 ? Math.round((stats.occupiedUnitsCount / stats.totalUnits) * 100) : 0}% occupancy`}
+          delta={t('stat.occupancyPct', { pct: stats.totalUnits > 0 ? Math.round((stats.occupiedUnitsCount / stats.totalUnits) * 100) : 0 })}
         />
         <StatTile
           label={t('stat.monthlyPayout')}
@@ -69,8 +74,12 @@ export default async function OwnerDashboardPage({ params }: { params: Promise<{
             return (
               <Tr key={property.id}>
                 <Td>
-                  <div className="font-semibold">{listing?.title ?? property.address}</div>
-                  <div className="text-[11.5px] text-ink-soft">{property.district} District</div>
+                  <div className="font-semibold">
+                    {listing?.title ? localizeListingTitle(listing.title, locale) : localizeAddress(property.address, locale)}
+                  </div>
+                  <div className="text-[11.5px] text-ink-soft">
+                    {tc('districtLabel', { district: localizeDistrict(property.district, locale) })}
+                  </div>
                 </Td>
                 <Td>
                   <StatusPill property={property} listing={listing} tc={tc} />

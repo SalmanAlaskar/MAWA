@@ -1,7 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { getComplianceQueue, primaryVerificationLabel } from '@/lib/data/compliance';
+import { getComplianceQueue, primaryVerificationStatus } from '@/lib/data/compliance';
 import { formatDate } from '@/lib/format';
+import { localizeAddress } from '@/lib/i18n-data';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { Icon } from '@/components/ui/Icon';
@@ -38,13 +39,17 @@ export default async function CompliancePage({
           <DataTable columns={[t('th.applicant'), t('th.type'), t('th.submitted'), t('th.verification'), t('th.docs')]}>
             {rows.map((row) => {
               const isSmb = Boolean(row.latest.account?.company);
-              const name = row.latest.account?.company?.legalName ?? row.latest.account?.fullName ?? row.latest.property?.address ?? '—';
+              const name =
+                row.latest.account?.company?.legalName ??
+                row.latest.account?.fullName ??
+                (row.latest.property?.address ? localizeAddress(row.latest.property.address, locale) : '—');
               const sub = isSmb
-                ? `CR ${row.latest.account?.company?.crNumber ?? ''}`
+                ? `${t('crPrefix')} ${row.latest.account?.company?.crNumber ?? ''}`
                 : row.latest.account?.properties[0]
-                  ? `Owner · ${row.latest.account.properties[0].address}`
-                  : 'Owner';
-              const verification = primaryVerificationLabel(row.allChecks);
+                  ? `${t('typeOwner')} · ${localizeAddress(row.latest.account.properties[0].address, locale)}`
+                  : t('typeOwner');
+              const verificationStatus = primaryVerificationStatus(row.allChecks);
+              const verification = { label: t(`verification.${verificationStatus.key}`), variant: verificationStatus.variant };
               return (
                 <Tr key={row.key}>
                   <Td>
@@ -106,7 +111,7 @@ async function ApplicantPanel({
         <div>
           <div className="font-semibold">{name}</div>
           <div className="text-[11.5px] text-ink-soft">
-            {isSmb ? t('typeSmb') : t('typeOwner')} · submitted {formatDate(selected.latest.createdAt, locale)}
+            {isSmb ? t('typeSmb') : t('typeOwner')} · {t('th.submitted')} {formatDate(selected.latest.createdAt, locale)}
           </div>
         </div>
       </div>
@@ -118,8 +123,8 @@ async function ApplicantPanel({
               name={check.status === 'approved' ? 'shield' : 'clock'}
               className={`h-4 w-4 ${check.status === 'approved' ? 'text-success' : 'text-warning'}`}
             />
-            <span>{docLabel(check.docType)}</span>
-            <span className="ms-auto text-[11.5px] text-ink-soft">{docNote(check)}</span>
+            <span>{docLabel(check.docType, t)}</span>
+            <span className="ms-auto text-[11.5px] text-ink-soft">{docNote(check, t)}</span>
           </div>
         ))}
       </div>
@@ -141,15 +146,19 @@ async function ApplicantPanel({
   );
 }
 
-function docLabel(docType: string) {
-  return docType
-    .split('_')
-    .map((w) => w[0].toUpperCase() + w.slice(1))
-    .join(' ');
+function docLabel(docType: string, t: Awaited<ReturnType<typeof getTranslations>>) {
+  try {
+    return t(`docTypes.${docType}` as never);
+  } catch {
+    return docType
+      .split('_')
+      .map((w) => w[0].toUpperCase() + w.slice(1))
+      .join(' ');
+  }
 }
 
-function docNote(check: { status: string }) {
-  if (check.status === 'approved') return 'Verified';
-  if (check.status === 'rejected') return 'Mismatch';
-  return 'Pending';
+function docNote(check: { status: string }, t: Awaited<ReturnType<typeof getTranslations>>) {
+  if (check.status === 'approved') return t('docStatus.verified');
+  if (check.status === 'rejected') return t('docStatus.mismatch');
+  return t('docStatus.pending');
 }

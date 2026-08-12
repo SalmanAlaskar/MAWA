@@ -67,11 +67,12 @@ export function bookingStepStatus(booking: BookingDetail): Record<BookingStepKey
  */
 export interface PaymentScheduleGroup {
   dueDate: Date;
-  label: string;
+  isDepositOnly: boolean;
   status: 'paid' | 'pending' | 'scheduled' | 'failed' | 'refunded';
   totalAmount: number;
 }
 
+/** Label ("Deposit" / "{month} rent + fees") is built by the caller via t(), so this stays locale-agnostic. */
 export function paymentScheduleGroups(payments: BookingDetail['payments']): PaymentScheduleGroup[] {
   const byDueDate = new Map<string, BookingDetail['payments']>();
   for (const p of payments) {
@@ -85,12 +86,10 @@ export function paymentScheduleGroups(payments: BookingDetail['payments']): Paym
     .map(([key, group]) => {
       const totalAmount = group.reduce((sum, p) => sum + Number(p.amount), 0);
       const isDepositOnly = group.every((p) => p.type === 'deposit');
-      const month = new Date(key).toLocaleDateString('en-US', { month: 'short' });
-      const label = isDepositOnly ? 'Deposit' : `${month} rent + fees`;
       // "paid" only if every component paid; otherwise reflect the earliest due row's status as pending/scheduled.
       const allPaid = group.every((p) => p.status === 'paid');
       const status: PaymentScheduleGroup['status'] = allPaid ? 'paid' : (group[0].status as PaymentScheduleGroup['status']);
-      return { dueDate: new Date(key), label, status, totalAmount };
+      return { dueDate: new Date(key), isDepositOnly, status, totalAmount };
     })
     .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
 }
