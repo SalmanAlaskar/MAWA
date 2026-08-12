@@ -5,6 +5,7 @@ import { localizeCity, localizeDistrict, localizeListingTitle, localizeTransitSt
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { Icon } from '@/components/ui/Icon';
+import { PropertyImage } from '@/components/ui/PropertyImage';
 import { Button, LinkButton } from '@/components/ui/Button';
 import { Switch } from '@/components/ui/Switch';
 import { PillOption } from '@/components/ui/PillOption';
@@ -124,9 +125,7 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
               const transit = nearestTransit(listing);
               return (
                 <Card key={listing.id} className="flex flex-col gap-3 p-3.5 sm:flex-row">
-                  <div className="flex aspect-video shrink-0 items-center justify-center rounded-lg bg-surface-2 text-ink-soft sm:aspect-square sm:w-40">
-                    <Icon name="building" className="h-7 w-7" />
-                  </div>
+                  <PropertyImage seed={listing.id} className="aspect-video shrink-0 rounded-lg sm:aspect-square sm:w-40" />
                   <div className="flex flex-1 flex-col gap-2">
                     <div className="flex items-start justify-between gap-2.5">
                       <div>

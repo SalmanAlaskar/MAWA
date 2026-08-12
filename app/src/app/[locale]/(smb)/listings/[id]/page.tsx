@@ -11,6 +11,7 @@ import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { Icon } from '@/components/ui/Icon';
 import { LinkButton } from '@/components/ui/Button';
+import { PropertyImage } from '@/components/ui/PropertyImage';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,12 +42,15 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px] lg:items-start">
         <div>
-          <div className="flex aspect-[16/8] items-center justify-center gap-1.5 rounded-card bg-surface-2 text-[12.5px] text-ink-soft">
-            <Icon name="building" className="h-8 w-8" /> 12 {t('gallery')}
+          <div className="relative aspect-[16/8]">
+            <PropertyImage seed={listing.id} className="h-full w-full rounded-card" />
+            <span className="absolute bottom-2 start-2 rounded-full bg-ink/70 px-2.5 py-1 text-[11.5px] text-white">
+              12 {t('gallery')}
+            </span>
           </div>
           <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-5">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="aspect-square rounded-lg bg-surface-2" />
+              <PropertyImage key={i} seed={`${listing.id}-${i}`} className="aspect-square rounded-lg" />
             ))}
           </div>
 
