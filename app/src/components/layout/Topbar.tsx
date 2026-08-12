@@ -1,6 +1,7 @@
 'use client';
 
 import { Link, usePathname } from '@/i18n/navigation';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { Logo } from './Logo';
 import { RoleSwitcher } from './RoleSwitcher';
 import type { SessionRole } from '@/lib/session';
@@ -57,6 +58,7 @@ export function Topbar({
       </nav>
       <div className="flex-1" />
       <RoleSwitcher locale={locale} currentRole={role} labels={roleSwitcherLabels} />
+      <LanguageSwitcher locale={locale} />
       <div className="flex items-center gap-2 whitespace-nowrap text-[12.5px] text-ink-soft">
         <div className="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full bg-accent-tint text-[11px] font-bold text-accent-strong">
           {avatarInitials}
