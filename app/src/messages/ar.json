@@ -177,15 +177,42 @@
       "feeSmb": "عمولة الشركة",
       "feeVat": "ضريبة القيمة المضافة على رسوم المنصة",
       "claimsTitle": "مطالبات الضمان",
-      "claimsTh": { "booking": "الحجز", "type": "النوع", "status": "الحالة", "amount": "المبلغ" },
+      "claimsTh": {
+        "booking": "الحجز",
+        "type": "النوع",
+        "status": "الحالة",
+        "amount": "المبلغ"
+      },
       "accountsTitle": "حسابات المستخدمين",
-      "accountsTh": { "account": "الحساب", "role": "الدور", "status": "الحالة", "joined": "تاريخ الانضمام", "action": "إجراء" },
+      "accountsTh": {
+        "account": "الحساب",
+        "role": "الدور",
+        "status": "الحالة",
+        "joined": "تاريخ الانضمام",
+        "action": "إجراء"
+      },
       "roleOwner": "مالك عقار",
       "roleSmb": "مسؤول شركة",
       "roleOps": "فريق العمليات",
       "statusActive": "نشط",
       "statusSuspended": "موقوف",
-      "statusPending": "قيد الانتظار"
+      "statusPending": "قيد الانتظار",
+      "flags": {
+        "title": "لوحة التحكم بالميزات",
+        "subtitle": "تفعيل وتعطيل مزودي الخدمة وميزات المنتج دون الحاجة لإعادة نشر النظام",
+        "categoryProvider": "مزودو الخدمة (تجريبي مقابل فعلي)",
+        "categoryProduct": "ميزات المنتج",
+        "sandbox": "تجريبي",
+        "live": "فعّال",
+        "off": "معطّل",
+        "keys": {
+          "payments_live": "المدفوعات الفعلية (Tap / Moyasar)",
+          "ejar_live_registration": "التسجيل الفعلي في إيجار",
+          "fal_live_licensing": "ترخيص فال الفعلي",
+          "guarantee_fund_claims": "مطالبات صندوق الضمان",
+          "employee_shortlist_view": "قائمة تفضيلات الموظفين (المرحلة الثانية)"
+        }
+      }
     }
   }
 }

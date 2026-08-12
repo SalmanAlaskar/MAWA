@@ -2,11 +2,14 @@ import { getTranslations } from 'next-intl/server';
 import { getAdminOverview } from '@/lib/data/admin';
 import { formatSar, formatDate } from '@/lib/format';
 import { PLATFORM_CONFIG } from '@/lib/config';
+import { toggleFeatureFlag } from '@/lib/admin-actions';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
+import { Switch } from '@/components/ui/Switch';
 import { StatTile } from '@/components/ui/StatTile';
 import { Button } from '@/components/ui/Button';
 import { DataTable, Td, Tr } from '@/components/ui/DataTable';
+import type { FeatureFlag } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,7 +17,9 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'ops.admin' });
   const tc = await getTranslations({ locale, namespace: 'common' });
-  const { accountCount, pendingAccountCount, openDisputeCount, claims, accounts } = await getAdminOverview();
+  const { accountCount, pendingAccountCount, openDisputeCount, claims, accounts, featureFlags } = await getAdminOverview();
+  const providerFlags = featureFlags.filter((f) => f.category === 'provider');
+  const productFlags = featureFlags.filter((f) => f.category === 'product');
 
   const blendedTakeRate = ((PLATFORM_CONFIG.ownerFeePct + PLATFORM_CONFIG.smbFeePct) / 2).toFixed(1);
 
@@ -70,6 +75,27 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
         </Card>
       </div>
 
+      <Card className="mb-5 p-1">
+        <div className="flex flex-wrap items-center justify-between gap-2 p-3 pb-1">
+          <h3 className="font-serif text-base font-semibold">{t('flags.title')}</h3>
+          <span className="text-[12.5px] text-ink-soft">{t('flags.subtitle')}</span>
+        </div>
+        <div className="px-3.5 pb-4">
+          <p className="mb-2 text-[11.5px] font-semibold uppercase tracking-wide text-ink-soft">{t('flags.categoryProvider')}</p>
+          <div className="flex flex-col">
+            {providerFlags.map((flag) => (
+              <FeatureFlagRow key={flag.key} flag={flag} locale={locale} t={t} />
+            ))}
+          </div>
+          <p className="mb-2 mt-3.5 text-[11.5px] font-semibold uppercase tracking-wide text-ink-soft">{t('flags.categoryProduct')}</p>
+          <div className="flex flex-col">
+            {productFlags.map((flag) => (
+              <FeatureFlagRow key={flag.key} flag={flag} locale={locale} t={t} />
+            ))}
+          </div>
+        </div>
+      </Card>
+
       <Card className="p-1">
         <div className="p-3">
           <h3 className="font-serif text-base font-semibold">{t('accountsTitle')}</h3>
@@ -124,4 +150,38 @@ function roleLabel(role: string, t: Awaited<ReturnType<typeof getTranslations>>)
   if (role === 'owner') return t('roleOwner');
   if (role === 'smb_admin') return t('roleSmb');
   return t('roleOps');
+}
+
+function FeatureFlagRow({
+  flag,
+  locale,
+  t,
+}: {
+  flag: FeatureFlag;
+  locale: string;
+  t: Awaited<ReturnType<typeof getTranslations>>;
+}) {
+  // Every seeded flag key (prisma/seed.ts) has a matching flags.keys.* entry
+  // in both locale files — falls back to the DB label if a new flag is added
+  // without a translation yet.
+  let label: string;
+  try {
+    label = t(`flags.keys.${flag.key}` as never);
+  } catch {
+    label = flag.label;
+  }
+  const onLabel = t('flags.live');
+  const offLabel = flag.category === 'provider' ? t('flags.sandbox') : t('flags.off');
+
+  const toggle = toggleFeatureFlag.bind(null, locale, flag.key, !flag.enabled);
+
+  return (
+    <form action={toggle} className="flex items-center justify-between gap-2.5 border-t border-line py-2.5 first:border-t-0">
+      <span>{label}</span>
+      <button type="submit" className="flex items-center gap-2.5" aria-label={label}>
+        <Chip variant={flag.enabled ? 'success' : 'neutral'}>{flag.enabled ? onLabel : offLabel}</Chip>
+        <Switch on={flag.enabled} />
+      </button>
+    </form>
+  );
 }

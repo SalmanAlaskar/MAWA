@@ -1,7 +1,7 @@
 import { prisma } from '../prisma';
 
 export async function getAdminOverview() {
-  const [accountCount, pendingAccountCount, openDisputeCount, claims, accounts] = await Promise.all([
+  const [accountCount, pendingAccountCount, openDisputeCount, claims, accounts, featureFlags] = await Promise.all([
     prisma.account.count(),
     prisma.account.count({ where: { status: 'pending' } }),
     prisma.guaranteeClaim.count({ where: { status: { in: ['filed', 'evidence_collection', 'under_review'] } } }),
@@ -15,6 +15,7 @@ export async function getAdminOverview() {
       orderBy: { createdAt: 'asc' },
       take: 20,
     }),
+    prisma.featureFlag.findMany({ orderBy: { key: 'asc' } }),
   ]);
 
   return {
@@ -23,6 +24,7 @@ export async function getAdminOverview() {
     openDisputeCount,
     claims,
     accounts,
+    featureFlags,
   };
 }
 

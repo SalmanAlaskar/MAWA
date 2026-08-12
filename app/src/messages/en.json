@@ -177,15 +177,42 @@
       "feeSmb": "SMB commission",
       "feeVat": "VAT on platform fee",
       "claimsTitle": "Guarantee claims",
-      "claimsTh": { "booking": "Booking", "type": "Type", "status": "Status", "amount": "Amount" },
+      "claimsTh": {
+        "booking": "Booking",
+        "type": "Type",
+        "status": "Status",
+        "amount": "Amount"
+      },
       "accountsTitle": "User accounts",
-      "accountsTh": { "account": "Account", "role": "Role", "status": "Status", "joined": "Joined", "action": "Action" },
+      "accountsTh": {
+        "account": "Account",
+        "role": "Role",
+        "status": "Status",
+        "joined": "Joined",
+        "action": "Action"
+      },
       "roleOwner": "Property Owner",
       "roleSmb": "SMB Admin",
       "roleOps": "Platform Ops",
       "statusActive": "Active",
       "statusSuspended": "Suspended",
-      "statusPending": "Pending"
+      "statusPending": "Pending",
+      "flags": {
+        "title": "Feature control panel",
+        "subtitle": "Toggle providers and product features without a redeploy",
+        "categoryProvider": "Providers (mock vs. live)",
+        "categoryProduct": "Product features",
+        "sandbox": "Sandbox",
+        "live": "Live",
+        "off": "Off",
+        "keys": {
+          "payments_live": "Live payments (Tap / Moyasar)",
+          "ejar_live_registration": "Live Ejar registration",
+          "fal_live_licensing": "Live Fal licensing",
+          "guarantee_fund_claims": "Guarantee fund claims",
+          "employee_shortlist_view": "Employee shortlist view (Phase 2)"
+        }
+      }
     }
   }
 }
