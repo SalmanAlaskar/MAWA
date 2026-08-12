@@ -165,7 +165,31 @@
       "payout": "Next payout"
     },
     "statLine": "{count} properties · {districtCount} districts in {city}",
-    "statDeltaActiveListings": "+1 this month"
+    "statDeltaActiveListings": "+1 this month",
+    "payouts": {
+      "meta": "{count} live listings generating monthly payouts",
+      "totalLabel": "This month's total payout",
+      "th": {
+        "property": "Property",
+        "tenant": "Tenant",
+        "grossRent": "Gross rent",
+        "fee": "Platform fee",
+        "netPayout": "Net payout",
+        "nextPayout": "Next payout"
+      },
+      "notOccupied": "Not yet occupied",
+      "emptyState": "No live listings yet — payouts appear here once a listing is occupied."
+    },
+    "compliance": {
+      "meta": "{approved}/{total} documents approved",
+      "statusApproved": "Approved",
+      "statusPending": "Pending review",
+      "statusRejected": "Rejected",
+      "statusExpired": "Expired",
+      "statusResubmission": "Resubmission required",
+      "reviewedOn": "Reviewed {date}",
+      "emptyState": "No compliance documents submitted yet."
+    }
   },
   "ops": {
     "compliance": {
@@ -195,6 +219,16 @@
         "verified": "Verified",
         "mismatch": "Mismatch",
         "pending": "Pending"
+      },
+      "verificationDetails": {
+        "crNumber": "CR number",
+        "legalName": "Legal name",
+        "status": "Status",
+        "activity": "Activity",
+        "nafathVerified": "Verified via Nafath",
+        "nafathNotVerified": "Not verified via Nafath",
+        "nafathPendingStatus": "Pending",
+        "reason": "Reason"
       },
       "docTypes": {
         "authorization_letter": "Authorization Letter",

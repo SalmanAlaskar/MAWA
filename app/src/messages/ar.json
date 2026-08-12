@@ -165,7 +165,31 @@
       "payout": "الدفعة القادمة"
     },
     "statLine": "{count} عقار · {districtCount} أحياء في {city}",
-    "statDeltaActiveListings": "+1 هذا الشهر"
+    "statDeltaActiveListings": "+1 هذا الشهر",
+    "payouts": {
+      "meta": "{count} إعلان مباشر يحقق دفعات شهرية",
+      "totalLabel": "إجمالي دفعات هذا الشهر",
+      "th": {
+        "property": "العقار",
+        "tenant": "المستأجر",
+        "grossRent": "الإيجار الإجمالي",
+        "fee": "رسوم المنصة",
+        "netPayout": "صافي الدفعة",
+        "nextPayout": "الدفعة القادمة"
+      },
+      "notOccupied": "غير مؤجر بعد",
+      "emptyState": "لا توجد إعلانات مباشرة بعد — تظهر الدفعات هنا بعد تأجير الإعلان."
+    },
+    "compliance": {
+      "meta": "{approved}/{total} مستندات معتمدة",
+      "statusApproved": "معتمد",
+      "statusPending": "قيد المراجعة",
+      "statusRejected": "مرفوض",
+      "statusExpired": "منتهي الصلاحية",
+      "statusResubmission": "يتطلب إعادة تقديم",
+      "reviewedOn": "تمت المراجعة بتاريخ {date}",
+      "emptyState": "لم يتم تقديم أي مستندات امتثال بعد."
+    }
   },
   "ops": {
     "compliance": {
@@ -195,6 +219,16 @@
         "verified": "موثّق",
         "mismatch": "عدم تطابق",
         "pending": "قيد الانتظار"
+      },
+      "verificationDetails": {
+        "crNumber": "رقم السجل التجاري",
+        "legalName": "الاسم النظامي",
+        "status": "الحالة",
+        "activity": "النشاط",
+        "nafathVerified": "موثّق عبر نفاذ",
+        "nafathNotVerified": "غير موثّق عبر نفاذ",
+        "nafathPendingStatus": "قيد الانتظار",
+        "reason": "السبب"
       },
       "docTypes": {
         "authorization_letter": "خطاب تفويض",

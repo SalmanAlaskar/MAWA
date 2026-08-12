@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { getSession } from '@/lib/session';
-import { getOwnerDashboard } from '@/lib/data/owner';
+import { getOwnerDashboard, nextPayoutDate } from '@/lib/data/owner';
 import { formatSar, formatDate } from '@/lib/format';
 import { localizeAddress, localizeCity, localizeDistrict, localizeListingTitle } from '@/lib/i18n-data';
 import { PLATFORM_CONFIG } from '@/lib/config';
@@ -94,12 +94,6 @@ export default async function OwnerDashboardPage({ params }: { params: Promise<{
       </Card>
     </div>
   );
-}
-
-function nextPayoutDate() {
-  const d = new Date();
-  d.setMonth(d.getMonth() + 1, 1);
-  return d;
 }
 
 function StatusPill({

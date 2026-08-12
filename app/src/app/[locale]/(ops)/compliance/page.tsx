@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getComplianceQueue, primaryVerificationStatus } from '@/lib/data/compliance';
 import { formatDate } from '@/lib/format';
-import { localizeAddress } from '@/lib/i18n-data';
+import { localizeAddress, localizeNafathReason, localizeWathqActivity, localizeWathqStatus } from '@/lib/i18n-data';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { Icon } from '@/components/ui/Icon';
@@ -130,9 +130,7 @@ async function ApplicantPanel({
       </div>
 
       {selected.latest.verificationResult ? (
-        <div className="flex flex-col gap-1 rounded-lg bg-surface-2 p-2.5 text-[12px] text-ink-soft">
-          {JSON.stringify(selected.latest.verificationResult)}
-        </div>
+        <VerificationDetails result={selected.latest.verificationResult} locale={locale} t={t} />
       ) : null}
 
       <textarea rows={3} placeholder={t('notePlaceholder')} className="resize-none rounded-lg border border-line bg-white p-2.5 text-[13px]" />
@@ -143,6 +141,62 @@ async function ApplicantPanel({
         <Button variant="text-critical">{tc('buttons.reject')}</Button>
       </div>
     </Card>
+  );
+}
+
+/**
+ * Renders the sandbox provider's simulated Wathq/Nafath response as
+ * labeled rows instead of a raw JSON dump — the shapes come straight
+ * from prisma/seed.ts's verificationResult fixtures.
+ */
+function VerificationDetails({
+  result,
+  locale,
+  t,
+}: {
+  result: unknown;
+  locale: string;
+  t: Awaited<ReturnType<typeof getTranslations>>;
+}) {
+  const data = result as { wathq?: Record<string, string>; nafath?: { verified?: boolean; status?: string; reason?: string } };
+  const wathq = data?.wathq;
+  const nafath = data?.nafath;
+
+  return (
+    <div className="flex flex-col gap-1.5 rounded-lg bg-surface-2 p-2.5 text-[12px]">
+      {wathq ? (
+        <>
+          <VRow label={t('verificationDetails.crNumber')} value={wathq.crNumber} />
+          <VRow label={t('verificationDetails.legalName')} value={wathq.legalName} />
+          <VRow label={t('verificationDetails.status')} value={localizeWathqStatus(wathq.status, locale)} />
+          <VRow label={t('verificationDetails.activity')} value={localizeWathqActivity(wathq.activity, locale)} />
+        </>
+      ) : null}
+      {nafath ? (
+        <>
+          {nafath.verified === true ? (
+            <VRow label={t('verificationDetails.status')} value={t('verificationDetails.nafathVerified')} />
+          ) : null}
+          {nafath.verified === false ? (
+            <VRow label={t('verificationDetails.status')} value={t('verificationDetails.nafathNotVerified')} />
+          ) : null}
+          {nafath.status === 'pending' ? (
+            <VRow label={t('verificationDetails.status')} value={t('verificationDetails.nafathPendingStatus')} />
+          ) : null}
+          {nafath.reason ? <VRow label={t('verificationDetails.reason')} value={localizeNafathReason(nafath.reason, locale)} /> : null}
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function VRow({ label, value }: { label: string; value?: string }) {
+  if (!value) return null;
+  return (
+    <div className="flex justify-between gap-2 text-ink-soft">
+      <span>{label}</span>
+      <span className="font-semibold text-ink">{value}</span>
+    </div>
   );
 }
 

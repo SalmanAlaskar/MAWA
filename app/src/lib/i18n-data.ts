@@ -47,6 +47,19 @@ const CLAIM_REASONS_AR: Record<string, string> = {
   'Property damage': 'ضرر بالعقار',
 };
 
+const WATHQ_STATUS_AR: Record<string, string> = {
+  Active: 'نشط',
+};
+
+const WATHQ_ACTIVITY_AR: Record<string, string> = {
+  'Logistics & freight forwarding': 'نقل وشحن لوجستي',
+  'Retail trade': 'تجارة تجزئة',
+};
+
+const NAFATH_REASON_AR: Record<string, string> = {
+  name_mismatch: 'عدم تطابق الاسم',
+};
+
 export function localizeDistrict(name: string, locale: string): string {
   if (locale !== 'ar') return name;
   return DISTRICTS_AR[name] ?? name;
@@ -70,6 +83,21 @@ export function localizeTransitStop(name: string, locale: string): string {
 export function claimReasonLabel(reason: string, locale: string): string {
   if (locale !== 'ar') return reason;
   return CLAIM_REASONS_AR[reason] ?? reason;
+}
+
+export function localizeWathqStatus(status: string, locale: string): string {
+  if (locale !== 'ar') return status;
+  return WATHQ_STATUS_AR[status] ?? status;
+}
+
+export function localizeWathqActivity(activity: string, locale: string): string {
+  if (locale !== 'ar') return activity;
+  return WATHQ_ACTIVITY_AR[activity] ?? activity;
+}
+
+export function localizeNafathReason(reason: string, locale: string): string {
+  if (locale !== 'ar') return reason;
+  return NAFATH_REASON_AR[reason] ?? reason;
 }
 
 /** e.g. "3BR Duplex, Al Malqa" -> "دوبلكس 3 غرف، الملقا" */
