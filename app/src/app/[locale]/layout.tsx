@@ -2,16 +2,8 @@ import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { Fraunces } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import '../globals.css';
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['500', '600'],
-  variable: '--font-fraunces',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'MAWA — Housing for your team in Saudi Arabia',
@@ -38,7 +30,7 @@ export default async function RootLayout({
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (
-    <html lang={locale} dir={dir} className={fraunces.variable}>
+    <html lang={locale} dir={dir}>
       <body className="bg-bg font-sans text-ink antialiased">
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>

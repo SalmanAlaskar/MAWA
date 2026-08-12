@@ -37,15 +37,13 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ['var(--font-fraunces)', 'Georgia', 'serif'],
-        sans: [
-          '-apple-system',
-          'BlinkMacSystemFont',
-          'Segoe UI',
-          'Helvetica',
-          'Arial',
-          'sans-serif',
-        ],
+        // Calibri is the brand typeface for both languages (Light body copy,
+        // Bold headings — see globals.css and the `font-heading` utility).
+        // It has no Arabic glyphs, so Arabic text automatically falls
+        // through to Segoe UI/Tahoma per the browser's per-character font
+        // matching — no separate Arabic stack needed.
+        sans: ['Calibri', 'Segoe UI', 'Tahoma', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        heading: ['Calibri', 'Segoe UI', 'Tahoma', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       borderRadius: {
         card: '12px',

@@ -36,8 +36,6 @@ export default async function SmbLayout({
     <div className="min-h-screen">
       <Topbar
         locale={locale}
-        brand={t('brand')}
-        brandAr={t('brandAr')}
         navItems={navItems}
         avatarInitials={initials(session.name)}
         displayName={session.name}

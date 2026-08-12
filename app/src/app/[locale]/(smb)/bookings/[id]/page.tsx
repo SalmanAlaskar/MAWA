@@ -35,7 +35,7 @@ export default async function BookingPage({ params }: { params: Promise<{ locale
 
   return (
     <div className="px-4 py-6 sm:px-6 sm:py-8">
-      <h1 className="font-serif text-xl font-semibold sm:text-2xl">
+      <h1 className="font-heading text-xl font-bold sm:text-2xl">
         {t('titlePrefix')} #{bookingRef(booking.id)} — {booking.listing.title}
       </h1>
       <p className="mt-1 text-[12.5px] text-ink-soft">
@@ -46,7 +46,7 @@ export default async function BookingPage({ params }: { params: Promise<{ locale
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px] lg:items-start">
         <Card className="flex flex-col gap-4 p-4">
-          <h3 className="font-serif text-[15.5px] font-semibold">{t('contractSummary')}</h3>
+          <h3 className="font-heading text-[15.5px] font-bold">{t('contractSummary')}</h3>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
             <Kv label={t('landlord')} value={property.address} />
             <Kv label={t('tenant')} value={booking.smbCompany.legalName} />
@@ -80,7 +80,7 @@ export default async function BookingPage({ params }: { params: Promise<{ locale
 
         <div className="flex flex-col gap-4">
           <Card className="flex flex-col gap-3.5 p-4">
-            <h4 className="flex items-center gap-1.5 font-serif text-[13.5px] font-semibold">
+            <h4 className="flex items-center gap-1.5 font-heading text-[13.5px] font-bold">
               <Icon name="shield" className="h-4 w-4 text-accent" /> {t('guaranteeTitle')}
             </h4>
             <ul className="flex flex-col gap-1.5 ps-4 text-[12.5px] text-ink-soft" style={{ listStyleType: 'disc' }}>

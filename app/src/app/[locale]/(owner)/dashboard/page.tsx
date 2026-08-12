@@ -25,7 +25,7 @@ export default async function OwnerDashboardPage({ params }: { params: Promise<{
     <div className="px-4 py-6 sm:px-6 sm:py-8">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-serif text-xl font-semibold sm:text-2xl">{t('title')}</h1>
+          <h1 className="font-heading text-xl font-bold sm:text-2xl">{t('title')}</h1>
           <p className="mt-1 text-[12.5px] text-ink-soft">
             {properties.length} properties · {districts.size} districts in {properties[0]?.city ?? 'Riyadh'}
           </p>
@@ -57,7 +57,7 @@ export default async function OwnerDashboardPage({ params }: { params: Promise<{
 
       <Card className="p-1">
         <div className="flex flex-wrap items-center justify-between gap-2 p-3">
-          <h3 className="font-serif text-base font-semibold">{t('tableTitle')}</h3>
+          <h3 className="font-heading text-base font-bold">{t('tableTitle')}</h3>
           <span className="text-[11.5px] text-ink-soft">{t('sortedByStatus')}</span>
         </div>
         <DataTable columns={[t('th.property'), t('th.status'), t('th.price'), t('th.tenant'), t('th.payout')]}>

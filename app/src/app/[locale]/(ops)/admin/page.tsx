@@ -26,7 +26,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
   return (
     <div className="px-4 py-6 sm:px-6 sm:py-8">
       <div className="mb-5">
-        <h1 className="font-serif text-xl font-semibold sm:text-2xl">{t('title')}</h1>
+        <h1 className="font-heading text-xl font-bold sm:text-2xl">{t('title')}</h1>
         <p className="mt-1 text-[12.5px] text-ink-soft">{t('meta')}</p>
       </div>
 
@@ -55,11 +55,11 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
           <FeeRow label={t('feeOwner')} value={`${PLATFORM_CONFIG.ownerFeePct.toFixed(1)}%`} tc={tc} />
           <FeeRow label={t('feeSmb')} value={`${PLATFORM_CONFIG.smbFeePct.toFixed(1)}%`} tc={tc} />
           <FeeRow label={t('feeVat')} value={`${PLATFORM_CONFIG.vatPct.toFixed(1)}%`} tc={tc} />
-          <h3 className="order-first mb-1 font-serif text-[15.5px] font-semibold">{t('feeTitle')}</h3>
+          <h3 className="order-first mb-1 font-heading text-[15.5px] font-bold">{t('feeTitle')}</h3>
         </Card>
 
         <Card className="p-1">
-          <h3 className="p-3 pb-1 font-serif text-[15.5px] font-semibold">{t('claimsTitle')}</h3>
+          <h3 className="p-3 pb-1 font-heading text-[15.5px] font-bold">{t('claimsTitle')}</h3>
           <DataTable columns={[t('claimsTh.booking'), t('claimsTh.type'), t('claimsTh.status'), t('claimsTh.amount')]}>
             {claims.map((claim) => (
               <Tr key={claim.id}>
@@ -77,7 +77,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
 
       <Card className="mb-5 p-1">
         <div className="flex flex-wrap items-center justify-between gap-2 p-3 pb-1">
-          <h3 className="font-serif text-base font-semibold">{t('flags.title')}</h3>
+          <h3 className="font-heading text-base font-bold">{t('flags.title')}</h3>
           <span className="text-[12.5px] text-ink-soft">{t('flags.subtitle')}</span>
         </div>
         <div className="px-3.5 pb-4">
@@ -98,7 +98,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
 
       <Card className="p-1">
         <div className="p-3">
-          <h3 className="font-serif text-base font-semibold">{t('accountsTitle')}</h3>
+          <h3 className="font-heading text-base font-bold">{t('accountsTitle')}</h3>
         </div>
         <DataTable
           columns={[t('accountsTh.account'), t('accountsTh.role'), t('accountsTh.status'), t('accountsTh.joined'), t('accountsTh.action')]}

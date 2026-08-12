@@ -1,7 +1,7 @@
 'use client';
 
-import { Icon } from '@/components/ui/Icon';
 import { Link, usePathname } from '@/i18n/navigation';
+import { Logo } from './Logo';
 import { RoleSwitcher } from './RoleSwitcher';
 import type { SessionRole } from '@/lib/session';
 
@@ -13,8 +13,6 @@ export interface NavItem {
 
 export function Topbar({
   locale,
-  brand,
-  brandAr,
   navItems,
   avatarInitials,
   displayName,
@@ -23,8 +21,6 @@ export function Topbar({
   contextChip,
 }: {
   locale: string;
-  brand: string;
-  brandAr: string;
   navItems: NavItem[];
   avatarInitials: string;
   displayName: string;
@@ -35,11 +31,10 @@ export function Topbar({
   const pathname = usePathname();
   return (
     <div className="flex flex-wrap items-center gap-4 border-b border-line bg-surface px-4 py-3 sm:gap-7 sm:px-6">
-      <Link href="/search" className="flex items-center gap-2 whitespace-nowrap font-serif text-[17px] font-semibold text-ink">
-        <Icon name="house" className="h-5 w-5 text-accent" />
-        {brand} <span className="text-sm font-medium text-ink-soft">{brandAr}</span>
+      <Link href="/search" className="flex items-center whitespace-nowrap">
+        <Logo />
         {contextChip ? (
-          <span className="ms-1.5 rounded-full bg-accent-tint px-2 py-0.5 text-[11.5px] font-semibold text-accent-strong">
+          <span className="ms-1.5 rounded-full bg-accent-tint px-2 py-0.5 text-[11.5px] font-bold text-accent-strong">
             {contextChip}
           </span>
         ) : null}

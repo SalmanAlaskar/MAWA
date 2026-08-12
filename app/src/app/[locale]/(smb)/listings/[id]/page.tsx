@@ -49,7 +49,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
             ))}
           </div>
 
-          <h1 className="mb-1 mt-4 font-serif text-xl font-semibold sm:text-2xl">{listing.title}</h1>
+          <h1 className="mb-1 mt-4 font-heading text-xl font-bold sm:text-2xl">{listing.title}</h1>
           <div className="flex items-center gap-1.5 text-[13.5px] text-ink-soft">
             <Icon name="pin" className="h-3.5 w-3.5" />
             {property.district}, {property.city} · National Address {property.nationalAddressCode}

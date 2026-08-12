@@ -19,7 +19,7 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
   return (
     <div className="px-4 py-6 sm:px-6 sm:py-8">
       <div className="mb-4">
-        <h1 className="font-serif text-xl font-semibold sm:text-2xl">{t('h1')}</h1>
+        <h1 className="font-heading text-xl font-bold sm:text-2xl">{t('h1')}</h1>
         <p className="mt-1 text-[12.5px] text-ink-soft">{t('meta')}</p>
       </div>
 
@@ -127,7 +127,7 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
                   <div className="flex flex-1 flex-col gap-2">
                     <div className="flex items-start justify-between gap-2.5">
                       <div>
-                        <p className="font-serif text-[15.5px] font-semibold">{listing.title}</p>
+                        <p className="font-heading text-[15.5px] font-bold">{listing.title}</p>
                         <div className="mt-0.5 flex items-center gap-1.5 text-[12.5px] text-ink-soft">
                           <Icon name="pin" className="h-3.5 w-3.5" />
                           {listing.unit.property.district}, {listing.unit.property.city}
@@ -164,7 +164,7 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
                       </div>
                     ) : null}
                     <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-1.5">
-                      <div className="font-serif text-lg font-semibold tabular-nums">
+                      <div className="font-heading text-lg font-bold tabular-nums">
                         {formatSar(Number(listing.priceMonthly), locale)}
                         <small className="ms-1 font-sans text-xs font-medium text-ink-soft">{tc('priceSuffix')}</small>
                       </div>

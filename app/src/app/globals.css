@@ -7,6 +7,12 @@
     background-color: #f7f3ea;
   }
 
+  /* Brand type: Calibri Light for body copy, Calibri Bold for headings
+     (font-heading below), in both languages. */
+  body {
+    font-weight: 300;
+  }
+
   /* Price/stat figures use tabular numerals throughout, per design tokens. */
   .tabular-nums {
     font-variant-numeric: tabular-nums;

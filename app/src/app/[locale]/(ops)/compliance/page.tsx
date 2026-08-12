@@ -27,7 +27,7 @@ export default async function CompliancePage({
   return (
     <div className="px-4 py-6 sm:px-6 sm:py-8">
       <div className="mb-4">
-        <h1 className="font-serif text-xl font-semibold sm:text-2xl">{t('title')}</h1>
+        <h1 className="font-heading text-xl font-bold sm:text-2xl">{t('title')}</h1>
         <p className="mt-1 text-[12.5px] text-ink-soft">
           {rows.length} {t('metaCount')}
         </p>
