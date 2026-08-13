@@ -1,5 +1,5 @@
 import { redirect } from '@/i18n/navigation';
-import { getSession } from '@/lib/session';
+import { getSession, hasSession } from '@/lib/session';
 
 const HOME_PATH = {
   owner: '/dashboard',
@@ -9,6 +9,9 @@ const HOME_PATH = {
 
 export default async function RootIndexPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  if (!hasSession()) {
+    redirect({ href: '/login', locale });
+  }
   const session = getSession();
   redirect({ href: HOME_PATH[session.role], locale });
 }

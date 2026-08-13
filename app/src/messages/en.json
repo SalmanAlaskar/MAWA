@@ -1,4 +1,15 @@
 {
+  "login": {
+    "title": "Sign in to MAWA",
+    "subtitle": "Sandbox login — pick a demo persona to continue, or verify with Nafath.",
+    "personasHeading": "Continue as",
+    "continueButton": "Continue",
+    "orDivider": "or",
+    "nafathButton": "Sign in with Nafath",
+    "nafathWaitingTitle": "Confirm this number in your Nafath app",
+    "nafathWaitingHint": "Waiting for approval on your phone…",
+    "nafathSuccessTitle": "Verified"
+  },
   "common": {
     "sandboxBanner": "Sandbox mode — Fal license, Ejar registration, and payments shown here are simulated. Nothing on this page is a real, legally-binding ad, contract, or charge.",
     "nav": {
@@ -47,7 +58,8 @@
     "priceSuffix": "/mo + fees",
     "dash": "—",
     "roleGateTitle": "This area is for {role} accounts",
-    "roleGateDescription": "You're currently viewing as {role}. This is a stub, cookie-based session (no real auth yet) — switch roles below to continue.",
+    "roleGateDescription": "You're currently signed in as {role}. Log out and sign in as the right persona to continue.",
+    "logout": "Log out",
     "notBuiltYetBody": "Not built out in this scaffold — the brief calls for real layout/components on the six approved mockup screens; this section is a placeholder so navigation doesn't 404.",
     "noBookingsYet": "No bookings yet",
     "districtLabel": "{district} District"

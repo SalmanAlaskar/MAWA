@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
-import { getSession } from '@/lib/session';
+import { redirect } from '@/i18n/navigation';
+import { getSession, hasSession } from '@/lib/session';
 import { Topbar } from '@/components/layout/Topbar';
 import { SandboxBanner } from '@/components/layout/SandboxBanner';
 import { RoleGateNotice } from '@/components/layout/RoleGateNotice';
@@ -12,6 +13,10 @@ export default async function OpsLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  if (!hasSession()) {
+    redirect({ href: '/login', locale });
+  }
+
   const session = getSession();
   const t = await getTranslations({ locale, namespace: 'common' });
   const roleLabels = {
@@ -38,8 +43,7 @@ export default async function OpsLayout({
         navItems={navItems}
         avatarInitials={initials(session.name)}
         displayName={session.name}
-        role={session.role}
-        roleSwitcherLabels={roleLabels}
+        logoutLabel={t('logout')}
       />
       <SandboxBanner text={t('sandboxBanner')} />
       <main>{children}</main>

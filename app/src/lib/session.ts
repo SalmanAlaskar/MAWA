@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { PERSONAS, type SessionRole } from './personas';
 
 /**
  * Stub role-based session (per project brief: "No real auth provider yet").
@@ -9,7 +10,7 @@ import { cookies } from 'next/headers';
  * follow-up, not built here. See README.md "What's stubbed vs. real."
  */
 
-export type SessionRole = 'owner' | 'smb_admin' | 'ops';
+export type { SessionRole } from './personas';
 
 export interface Session {
   role: SessionRole;
@@ -21,18 +22,17 @@ const ROLE_COOKIE = 'mawa_role';
 const USER_ID_COOKIE = 'mawa_user_id';
 const NAME_COOKIE = 'mawa_name';
 
-/** Illustrative demo identities, matching prisma/seed.ts, keyed by role. */
-export const DEMO_IDENTITIES: Record<SessionRole, { userId: string; name: string }> = {
-  owner: { userId: 'seed-owner-fahad', name: 'Fahad Al-Otaibi' },
-  smb_admin: { userId: 'seed-smb-alfanar', name: 'Al-Fanar Logistics LLC' },
-  ops: { userId: 'seed-ops-lama', name: 'Lama K.' },
-};
-
 function isSessionRole(value: string | undefined): value is SessionRole {
   return value === 'owner' || value === 'smb_admin' || value === 'ops';
 }
 
-/** Read the current stub session from cookies. Falls back to a default demo owner session if unset. */
+/** True if a session cookie is actually set — unlike getSession(), this doesn't fall back to a default persona. Used to gate protected routes. */
+export function hasSession(): boolean {
+  const store = cookies();
+  return isSessionRole(store.get(ROLE_COOKIE)?.value) && Boolean(store.get(USER_ID_COOKIE)?.value);
+}
+
+/** Read the current stub session from cookies. Falls back to the first demo owner persona if unset (e.g. mid-refactor or a stale cookie). */
 export function getSession(): Session {
   const store = cookies();
   const role = store.get(ROLE_COOKIE)?.value;
@@ -43,8 +43,8 @@ export function getSession(): Session {
     return { role, userId, name };
   }
 
-  const fallbackRole: SessionRole = 'smb_admin';
-  return { role: fallbackRole, ...DEMO_IDENTITIES[fallbackRole] };
+  const fallback = PERSONAS[0];
+  return { role: fallback.role, userId: fallback.userId, name: fallback.name };
 }
 
 export const SESSION_COOKIE_NAMES = { ROLE_COOKIE, USER_ID_COOKIE, NAME_COOKIE };

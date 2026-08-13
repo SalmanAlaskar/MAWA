@@ -3,8 +3,7 @@
 import { Link, usePathname } from '@/i18n/navigation';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { Logo } from './Logo';
-import { RoleSwitcher } from './RoleSwitcher';
-import type { SessionRole } from '@/lib/session';
+import { logout } from '@/lib/session-actions';
 
 export interface NavItem {
   key: string;
@@ -17,16 +16,14 @@ export function Topbar({
   navItems,
   avatarInitials,
   displayName,
-  role,
-  roleSwitcherLabels,
+  logoutLabel,
   contextChip,
 }: {
   locale: string;
   navItems: NavItem[];
   avatarInitials: string;
   displayName: string;
-  role: SessionRole;
-  roleSwitcherLabels: Record<SessionRole, string> & { label: string };
+  logoutLabel: string;
   contextChip?: string;
 }) {
   const pathname = usePathname();
@@ -57,7 +54,6 @@ export function Topbar({
         })}
       </nav>
       <div className="flex-1" />
-      <RoleSwitcher locale={locale} currentRole={role} labels={roleSwitcherLabels} />
       <LanguageSwitcher locale={locale} />
       <div className="flex items-center gap-2 whitespace-nowrap text-[12.5px] text-ink-soft">
         <div className="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full bg-accent-tint text-[11px] font-bold text-accent-strong">
@@ -65,6 +61,11 @@ export function Topbar({
         </div>
         <span className="hidden sm:inline">{displayName}</span>
       </div>
+      <form action={logout.bind(null, locale)}>
+        <button type="submit" className="rounded-full border border-line px-2.5 py-1 text-[11.5px] font-semibold text-ink-soft hover:border-critical hover:text-critical">
+          {logoutLabel}
+        </button>
+      </form>
     </div>
   );
 }
